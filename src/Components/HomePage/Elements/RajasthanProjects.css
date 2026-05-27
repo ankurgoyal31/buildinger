@@ -1,0 +1,81 @@
+.rp-wrapper {
+  width: 100%;
+  padding: 40px 80px;
+  font-family: "Inter", sans-serif;
+  color: #333;
+}
+
+/* Tabs */
+.rp-tabs {
+  display: flex;
+  gap: 40px;
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.rp-tabs span {
+  cursor: pointer;
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+.rp-tabs .active {
+  color: #008CDB;   /* Brand Blue */
+  font-weight: 600;
+  opacity: 1;
+}
+
+/* Cities */
+.rp-city-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.rp-city-btn {
+  padding: 10px 25px;
+  border: none;
+  background: #f2f2f2;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.rp-city-btn.active {
+  background: #008CDB;
+  color: white;
+}
+
+.rp-city-btn:hover {
+  background: #e1e1e1;
+}
+
+/* Titles */
+.rp-title {
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Two-column layout */
+.rp-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+
+/* Items */
+.rp-item {
+  font-size: 16px;
+  margin-bottom: 10px;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.rp-item:hover {
+  color: #008CDB;
+  transition: 0.2s;
+}
