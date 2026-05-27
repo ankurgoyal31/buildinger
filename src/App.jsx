@@ -44,7 +44,7 @@ export default function App() {
         <Route path="/green-meadows" element={<GreenMeadows />} />
         <Route path="/is-paradise" element={<ISParadise />} />
         <Route path="/new-town" element={<NewTown />} />
-
+ 
         {/* Static Pages */}
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:slug" element={<ProjectsDetails3 />} />
