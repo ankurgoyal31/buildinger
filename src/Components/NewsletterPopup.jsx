@@ -85,7 +85,7 @@ console.log(err)
         </div>
 
         {/* Right Side - Form */}
-        <div className="w-full md:w-1/2 bg-[#df6c27] text-white p-8 md:p-12 flex flex-col justify-center">
+        <div style={{color:'black'}} className="w-full md:w-1/2 bg-white text-white p-8 md:p-12 flex flex-col justify-center">
           {/* Close Button */}
           <button 
             onClick={handleClose}
