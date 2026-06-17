@@ -46,7 +46,7 @@ const [data,setdata] = useState([])
             <div className="w-8 h-[1px] bg-[#0095e6]/40 mx-auto mb-5"></div>
 
             <h2 className="mb-6 text-[36px] font-light leading-snug tracking-wider text-gray-700 md:text-4xl uppercase relative inline-block">
-             {data[0]?.title6 || "The Spirit <br />That Reimagined Homes"}
+             {data[0]?.title6 || "The Spirit That Reimagined Homes"}
 
               {/* subtle hover underline */}
               <span className="absolute left-1/2 -bottom-2 w-0 h-[1px] bg-[#0095e6] -translate-x-1/2 transition-all duration-300 group-hover:w-12"></span>
