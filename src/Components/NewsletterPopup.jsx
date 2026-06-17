@@ -117,7 +117,7 @@ console.log(err)
           </div>
 
           <form  className="flex flex-col gap-4">
-            <input 
+            <input  style={{border:'solid #0000004d 1px'}}
               type="email" 
               placeholder="Email address" 
               required
