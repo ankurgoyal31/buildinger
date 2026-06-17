@@ -160,7 +160,7 @@ export default function Media() {
           <section className="pb-20 md:pb-28">
             <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10">
-                {articleImages.map((article, index) => (
+                {articleImages.length>0 ? articleImages.map((article, index) => (
                 <article  key={index} className="group bg-white border border-black/8 overflow-hidden transition-all duration-500 hover:shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
                     <div className="overflow-hidden"> 
                       <div
@@ -198,7 +198,7 @@ export default function Media() {
                       </button>
                     </div>
                   </article>
-                ))}
+                )):<><p style={{textAlign:"center",width:"80vw"}}>No Articles Found</p></>}
               </div>
             </div>
           </section>
@@ -209,7 +209,7 @@ export default function Media() {
           <section className="pb-20 md:pb-28">
             <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-                {galleryImages.map((item, index) => (
+                {galleryImages.length>0 ? galleryImages.map((item, index) => (
                   <div
                     key={index}
                     className="group overflow-hidden bg-white border border-black/8"
@@ -242,7 +242,7 @@ export default function Media() {
                       </button>
                     </div>
                   </div>
-                ))}
+                )):<><p style={{textAlign:"center",width:"80vw"}}>No Gallery Data Found Found</p></>}
               </div>
             </div>
           </section>
