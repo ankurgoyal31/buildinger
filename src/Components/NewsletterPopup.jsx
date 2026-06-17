@@ -34,7 +34,7 @@ const submit = async()=>{
         body:JSON.stringify({text})
       })
 if (res.status === 201) {
-  alert("success");
+  alert("successfully submitted");
 localStorage.setItem("show",JSON.stringify(false))
 window.location.reload();
 }
