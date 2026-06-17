@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: "0.0.0.0",
-    allowedHosts: ["uniquebuilders.onrender.com"],
+    allowedHosts: [
+      "uniquebuilders.onrender.com",
+      "buildinger.onrender.com"
+    ],
     proxy: {
       "/proxy-api": {
         target: "https://ub-admin-ejs-egx5.onrender.com",
@@ -17,6 +20,9 @@ export default defineConfig({
   },
   preview: {
     host: "0.0.0.0",
-    allowedHosts: ["uniquebuilders.onrender.com"],
+    allowedHosts: [
+      "uniquebuilders.onrender.com",
+      "buildinger.onrender.com"
+    ],
   },
 });
