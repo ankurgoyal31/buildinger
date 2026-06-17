@@ -89,7 +89,7 @@ console.log(err)
           {/* Close Button */}
           <button 
             onClick={handleClose}
-            className="absolute top-4 right-4 text-white hover:text-black/50 transition-colors z-10 p-2"
+            className="absolute top-4 right-4 text-zinc-600 hover:text-black transition-colors z-10 p-2"
             aria-label="Close"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
