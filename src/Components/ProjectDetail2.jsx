@@ -265,7 +265,7 @@ export default function ProjectDetail() {
                   </a>
                 )}
               </div>
-            </div>
+            </div> 
             <div style={S.overviewImgWrap}>
               <img
                 src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1974&auto=format&fit=crop"

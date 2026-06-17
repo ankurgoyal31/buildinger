@@ -7,6 +7,27 @@ const BASE_URL = "https://ub-admin-ejs.onrender.com";
 export default function LifestyleSection() {
   const [projects, setProjects] = useState([]);
 
+   const [data,setdata] = useState([])
+  
+   useEffect(() => {
+       
+       try{
+         fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+            //  console.log("Fetched media data:", data);
+             let reverse_data = data.reverse()
+              setdata(reverse_data);
+              // console.log(reverse_data)
+           })
+           .catch((err) => console.log("Error fetching media data:", err));
+   
+       }catch(err){
+        
+   console.log(err)
+  
+       }
+   
+     }, [])
+
   useEffect(() => {
      fetch("/proxy-api/api/projects")
       .then((res) => res.json())
@@ -24,29 +45,24 @@ export default function LifestyleSection() {
       <div className="grid grid-cols-1 md:grid-cols-10 container-fluid mx-auto">
         {/* Left Text (50%) */}
         <div className="md:col-span-5 pr-70 ps-30 flex flex-col justify-center p-10">
-          <h2 className="text-[32px]">Beyond the Horizon of Construction</h2>
+          <h2 className="text-[32px]">{data[0]?.title8 || "Beyond the Horizon of Construction"}</h2>
          <p className="mt-6 mb-10 text-gray-700 text-[16px] leading-tight">
-            Many build for the present; we build for the heritage. Our
-            "Human-Centric Design" philosophy ensures that every corridor, every
-            window placement, and every amenity is an answer to a lifestyle
-            need. Each detail is thoughtfully considered — from natural light
-            and ventilation to spatial flow and everyday convenience — creating
-            homes that feel intuitive, comfortable, and timeless.
+            {data[0]?.content7 ||"Many build for the present; we build for the heritage. Our `Human-Centric Design` philosophy ensures that every corridor, every window placement, and every amenity is an answer to a lifestyle need.  Each detail is thoughtfully considered — from natural light and ventilation to spatial flow and everyday convenience — creating homes that feel intuitive, comfortable, and timeless.  By integrating the latest in construction technology and forward-thinking design principles, we eliminate the friction of  home buying, replacing it with a journey defined by transparency, trust, and long-term value. Our approach goes beyond structures; it is about crafting environments where families grow, memories are created, and life unfolds seamlessly."}
             <br />
-            <br />
+            {/* <br />
             By integrating the latest in construction technology and
             forward-thinking design principles, we eliminate the friction of
             home buying, replacing it with a journey defined by transparency,
             trust, and long-term value. Our approach goes beyond structures; it
             is about crafting environments where families grow, memories are
-            created, and life unfolds seamlessly.
+            created, and life unfolds seamlessly. */}
           </p>
         </div>
 
         {/* Right Video (50%) */}
         <div className="md:col-span-5 self-stretch">
           <video
-            src={video1}
+            src={data[0]?.video7 || video1}
             autoPlay
             loop
             muted

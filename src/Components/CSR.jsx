@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect,useState } from "react";
 import Header from "../Header";
 import Footer from "../Footer";
 import AutoReveal from "./AutoReveal";
@@ -39,6 +40,24 @@ const initiatives = [
 ];
 
 export default function CSRPage() {
+  const [csrData, setCsrData] = useState([]);
+
+  useEffect(() => {
+    fetch('https://back-bulding-code.onrender.com/CSR_data').then(response => response.json())
+      .then(data => setCsrData(data))
+      .catch(error => console.error('Error fetching CSR data:', error));
+  }, []);
+
+  const galleryImages = [csrData[0]?.galleryImage1,csrData[0]?.galleryImage2,csrData[0]?.galleryImage3,csrData[0]?.galleryImage4,];
+
+  const titles = [csrData[0]?.galleryTitle1,csrData[0]?.galleryTitle2,csrData[0]?.galleryTitle3,csrData[0]?.galleryTitle4,];
+  const descriptions = [csrData[0]?.galleryDescription1,csrData[0]?.galleryDescription2,csrData[0]?.galleryDescription3,csrData[0]?.galleryDescription4,];
+  // console.log(images);
+  console.log(titles);
+  console.log(descriptions);
+
+  console.log(csrData);
+
   return (
     <>
       <Header />
@@ -47,23 +66,23 @@ export default function CSRPage() {
 
         {/* HERO */}
         <section className="relative min-h-[72vh] md:min-h-[88vh] overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=2070&auto=format&fit=crop" className="absolute inset-0 w-full h-full object-cover" />
+          <img src={csrData[0]?.heroImage||"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1920px-No-Image-Placeholder.svg.png"} className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/30" />
           <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.65),rgba(0,0,0,0.18),rgba(0,0,0,0.28))]" />
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 min-h-[72vh] md:min-h-[88vh] flex items-end pb-14 md:pb-20">
             <div className="max-w-4xl">
-              <p className="text-white/75 text-[17px] md:text-[11px] uppercase tracking-[0.34em] mb-4">
+              <p style={{marginTop:'105px'}} className="text-white/75 text-[17px] md:text-[11px] uppercase tracking-[0.34em] mb-4">
                 With Every Brick, We Honor Our Commitment
               </p>
 
               <h1 className="text-white text-[36px] md:text-[62px] font-light mb-5">
-                Corporate Social Responsibility
+                {csrData[0]?.heroTitle || "Building a Better World, One Act of Kindness at a Time."}
               </h1>
 
               {/* ✅ increased */}
               <p className="text-white text-[16px] md:text-[18px] leading-8 max-w-2xl">
-                We integrate sustainable practices and community welfare into the heart of our urban developments. We believe that true growth is measured by the positive impact we leave on the environment and the lives we touch. By investing in education, healthcare, and green living. 
+                {csrData[0]?.heroDescription || "We integrate sustainable practices and community welfare into the heart of our urban developments. We believe that true growth is measured by the positive impact we leave on the environment and the lives we touch. By investing in education, healthcare, and green living."}
               </p>
             </div>
           </div>
@@ -97,31 +116,30 @@ export default function CSRPage() {
         <section className="bg-[#fcfaf7]">
   <div className="max-w-[95%] mx-auto px-2 py-16 md:py-20 grid sm:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8">
 
-    {csrData.map((item, i) => (
+    {galleryImages.map((image, i) => (
       <div key={i} className="group">
-
         {/* IMAGE */}
         <div className="h-[400px] md:h-[480px] overflow-hidden mb-6">
           <img
-            src={item.image}
+            src={image!==undefined ? image : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1920px-No-Image-Placeholder.svg.png"}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             alt=""
           />
         </div>
-
+ 
         {/* CONTENT */}
         <div className="text-center px-2">
 
-          {/* <p className="text-[17px] uppercase tracking-[0.24em] text-[#8b8074] mb-3">
+          <p className="text-[17px] uppercase tracking-[0.24em] text-[#8b8074] mb-3">
             {String(i + 1).padStart(2, "0")}
-          </p> */}
+          </p>
 
           <h3 className="text-[20px] md:text-[22px] font-light text-[#3c342d] mb-4">
-            {item.title}
+            {titles[i] || `Gallery Title ${i + 1}`}
           </h3>
 
           <p className="text-[#6f655b] text-[12px] md:text-[12px] leading-4">
-            {item.desc}
+            {descriptions[i] || `Gallery description for image ${i + 1} is not available.`}
           </p>
 
         </div>
@@ -159,7 +177,7 @@ export default function CSRPage() {
     {/* IMAGE SIDE */}
     <div className="relative w-full h-[50vh] md:h-screen">
       <img
-        src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070"
+        src={csrData[0]?.sideImage ||"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1920px-No-Image-Placeholder.svg.png"}
         className="absolute inset-0 w-full h-full object-cover"
         alt=""
       />
@@ -174,11 +192,11 @@ export default function CSRPage() {
         </p>
 
         <h3 className="text-[28px] md:text-[34px] font-light leading-[1.1] mb-6 text-[#3c342d]">
-          Building a better world with every small act of kindness.
+         {csrData[0]?.sideTitle || "Building a better world with every small act of kindness."}
         </h3>
 
         <p className="text-[#6f655b] text-[15px] md:text-[17px] leading-8">
-         Our CSR work is more than just a policy; it is a promise to care for the community we call home. 
+        {csrData[0]?.sideDescription || "Our CSR work is more than just a policy; it is a promise to care for the community we call home."}
         </p>
 
       </div>

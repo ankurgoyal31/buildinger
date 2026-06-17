@@ -1,130 +1,151 @@
 import React from "react";
 import img1 from "../../assets/img/awrds-banner.avif";
-
+import { useEffect,useState } from "react";
 const ITEM_HEIGHT = 180;
 const VISIBLE_ITEMS = 3;
 
 export default function Awards() {
-  const awards = [
+  const [data,setdata] = useState([])
+
+ useEffect(() => {
+     
+     try{
+       fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+          //  console.log("Fetched media data:", data);
+           let reverse_data = data.reverse()
+            setdata(reverse_data);
+            // console.log(reverse_data)
+         })
+         .catch((err) => console.log("Error fetching media data:", err));
+ 
+     }catch(err){
+      
+ console.log(err)
+
+     }
+ 
+   }, [])
+
+  const awards = data[0]?.AwardSections.length>0 ? data[0]?.AwardSections : [
     {
-      date: "2025",
+      year: "2025",
       title: "GUINNESS WORLD RECORD",
-      desc: "World’s largest ground breaking ceremony for My Haveli.",
+      content: "World’s largest ground breaking ceremony for My Haveli.",
     },
     {
-      date: "2025",
+      year: "2025",
       title: "HURUN INDIA INDUSTRY ACHIEVEMENT AWARD",
-      desc: "Awarded in the Real Estate category.",
+      content: "Awarded in the Real Estate category.",
     },
     {
-      date: "2025",
+      year: "2025",
       title: "BEST REALTY BRAND",
-      desc: 'Recognised by ET Now at "The Best Realty Brands Conclave."',
+      content: 'Recognised by ET Now at "The Best Realty Brands Conclave."',
     },
     {
-      date: "2025",
+      year: "2025",
       title: "THE BEST RESIDENTIAL PROJECT",
-      desc: "Awarded to Unique Green Meadows by ET Real Estate Award.",
+      content: "Awarded to Unique Green Meadows by ET Real Estate Award.",
     },
     {
-      date: "2024",
+      year: "2024",
       title: "ULTRA LUXURY PROJECT OF THE YEAR (RESIDENTIAL)",
-      desc: "Awarded to Unique IS Paradise by ET Ascent at the Business Leader of the Year Award.",
+      content: "Awarded to Unique IS Paradise by ET Ascent at the Business Leader of the Year Award.",
     },
     {
-      date: "2021",
+      year: "2021",
       title: "INNOVATIVE PROJECT OF THE YEAR",
-      desc: "Awarded to Unique New Town by National Awards for Excellence in Real Estate.",
+      content: "Awarded to Unique New Town by National Awards for Excellence in Real Estate.",
     },
     {
-      date: "2021",
+      year: "2021",
       title: "DEVELOPER OF THE YEAR",
-      desc: "Awarded by National Awards for Excellence in Real Estate.",
+      content: "Awarded by National Awards for Excellence in Real Estate.",
     },
     {
-      date: "2021",
+      year: "2021",
       title: "RAJASTHAN BUSINESS LEADER OF THE YEAR",
-      desc: "Awarded to Vibhishek Pal Singh by CMO ASIA.",
+      content: "Awarded to Vibhishek Pal Singh by CMO ASIA.",
     },
     {
-      date: "2019",
+      year: "2019",
       title: "WORLD'S GREATEST BRANDS & LEADERS AWARDS",
-      desc: "Unique IS Paradise (Brand) & Vibhishek Pal Singh (Leader).",
+      content: "Unique IS Paradise (Brand) & Vibhishek Pal Singh (Leader).",
     },
     {
-      date: "2019",
+      year: "2019",
       title: "BEST COMPANY IN THE REAL ESTATE SECTOR IN RAJASTHAN",
-      desc: "Awarded by CNBC-AWAAZ Rajasthan Ratna Awards held at Jaipur.",
+      content: "Awarded by CNBC-AWAAZ Rajasthan Ratna Awards held at Jaipur.",
     },
     {
-      date: "2017",
+      year: "2017",
       title: "BEST RESIDENTIAL BUILDING AWARD",
-      desc: "Awarded to Unique IS Paradise by National Infrastructure & Construction Awards.",
+      content: "Awarded to Unique IS Paradise by National Infrastructure & Construction Awards.",
     },
     {
-      date: "2015",
+      year: "2015",
       title: "PRIDE OF RAJASTHAN AWARD",
-      desc: "Awarded to Vibhishek Pal Singh for noteworthy contribution in Real Estate Development by Zee Media.",
+      content: "Awarded to Vibhishek Pal Singh for noteworthy contribution in Real Estate Development by Zee Media.",
     },
     {
-      date: "2013",
+      year: "2013",
       title: "YOUNG ACHIEVER AWARD (ASIA PACIFIC REGION)",
-      desc: "Awarded to Vibhishek Pal Singh for retail excellence by ET Times Now Awards.",
+      content: "Awarded to Vibhishek Pal Singh for retail excellence by ET Times Now Awards.",
     },
     {
-      date: "2012",
+      year: "2012",
       title: "JAIPUR REAL ESTATE AWARDS: TRENDSETTER",
-      desc: "Recognized for excellence in real estate industry for PAN Rajasthan footprints.",
+      content: "Recognized for excellence in real estate industry for PAN Rajasthan footprints.",
     },
     {
-      date: "2012",
+      year: "2012",
       title: "EMERGING ENTREPRENEUR AWARD",
-      desc: "Awarded to Vibhishek Pal Singh by Planman Marcom.",
+      content: "Awarded to Vibhishek Pal Singh by Planman Marcom.",
     },
     {
-      date: "2012",
+      year: "2012",
       title: "JAIPUR REAL ESTATE AWARDS: MARKETING",
-      desc: "Awarded for the Best Innovative Marketing Campaign.",
+      content: "Awarded for the Best Innovative Marketing Campaign.",
     },
     {
-      date: "2011-12",
+      year: "2011-12",
       title: "POWER BRANDS RISING STAR AWARD",
-      desc: "Awarded by Planman Marcom.",
+      content: "Awarded by Planman Marcom.",
     },
     {
-      date: "2011",
+      year: "2011",
       title: "INDIA ACHIEVERS PODIUM AWARD",
-      desc: "Most Trusted Developer of Rajasthan & Young Entrepreneur Award (Vibhishek Pal Singh).",
+      content: "Most Trusted Developer of Rajasthan & Young Entrepreneur Award (Vibhishek Pal Singh).",
     },
     {
-      date: "2010",
+      year: "2010",
       title: "INDIA INTERNATIONAL ACHIEVERS AWARD",
-      desc: "Awarded for Infrastructure Excellence.",
+      content: "Awarded for Infrastructure Excellence.",
     },
     {
-      date: "2010",
+      year: "2010",
       title: "BUILDING INDUSTRY LEADERSHIP AWARD",
-      desc: "Fastest growing real estate group in affordable housing.",
+      content: "Fastest growing real estate group in affordable housing.",
     },
     {
-      date: "2009-10",
+      year: "2009-10",
       title: "BUILDING LEADERSHIP AWARD",
-      desc: "Awarded by Building Information Bureau, New Delhi.",
+      content: "Awarded by Building Information Bureau, New Delhi.",
     },
     {
-      date: "2009",
+      year: "2009",
       title: "MAPSOR INDIA PROPERTY AWARD",
-      desc: "Awarded for Best Residential Project and Excellent Brand.",
+      content: "Awarded for Best Residential Project and Excellent Brand.",
     },
     {
-      date: "2009",
+      year: "2009",
       title: "MAPSOR INDIA PROPERTY AWARD",
-      desc: "For Being an excellent Brand.",
+      content: "For Being an excellent Brand.",
     },
     {
-      date: "2006",
+      year: "2006",
       title: "CITYSCAPE ASIA AWARD",
-      desc: "Best Developer in Mixed-Use Project.",
+      content: "Best Developer in Mixed-Use Project.",
     },
   ];
 
@@ -133,13 +154,28 @@ export default function Awards() {
 
   const loopList = [...awards, ...awards];
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => prev + 1);
-    }, 3000);
+  console.log("Awards =>", awards);
+console.log("Loop =>", loopList);
+console.log(index);
 
-    return () => clearInterval(interval);
-  }, []);
+  // React.useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setIndex((prev) => prev + 1);
+  //   }, 3000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
+
+  React.useEffect(() => {
+  if (awards.length <= 1) return;
+
+  const interval = setInterval(() => {
+    setIndex((prev) => (prev + 1) % awards.length);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [awards.length]);
 
   React.useEffect(() => {
     if (index === awards.length) {
@@ -181,12 +217,12 @@ export default function Awards() {
                 key={i}
                 className="h-[180px] py-5 border-b border-white/30 flex flex-col justify-center"
               >
-                <p className="text-[14px] opacity-80 tracking-[2px]">{a.date}</p>
+                <p className="text-[14px] opacity-80 tracking-[2px]">{a.year}</p>
                 <h3 className="mt-2 text-lg md:text-[20px] font-semibold tracking-[2px] uppercase">
                   {a.title}
                 </h3>
                 <p className="mt-2 text-[16px] md:text-[16px] opacity-85 leading-relaxed">
-                  {a.desc}
+                  {a.content}
                 </p>
               </div>
             ))}

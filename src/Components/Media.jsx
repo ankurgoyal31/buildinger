@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import img1 from "../assets/img/2002.jpg";
 import img2 from "../assets/img/2002.jpg";
 import img3 from "../assets/img/2002.jpg";
@@ -7,47 +7,73 @@ import Footer from "../Footer";
 
 export default function Media() {
   const [activeTab, setActiveTab] = useState("Articles");
+  const [mediaData, setMediaData] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  const[galleryDatashowAll, setGalleryDatashowAll] = useState([]);
+  const[articleDatashowAll, setArticleDatashowAll] = useState([]);
+  const articles = mediaData.length > 0 ? mediaData : []
+  //  [
+  //   {
+  //     image: img1,
+  //     category: "Press Release",
+  //     title: "A New Standard of Contemporary Living in Jaipur",
+  //     excerpt:
+  //       "Discover how thoughtful architecture, premium amenities, and prime urban connectivity are redefining the residential experience.",
+  //     date: "12 Feb 2026",
+  //   },
+  //   {
+  //     image: img2,
+  //     category: "Market Insight",
+  //     title: "Why Premium Real Estate Continues to Lead Buyer Interest",
+  //     excerpt:
+  //       "From location value to long-term appreciation, premium projects continue to attract homebuyers seeking both comfort and confidence.",
+  //     date: "18 Feb 2026",
+  //   },
+  //   {
+  //     image: img3,
+  //     category: "Project Update",
+  //     title: "Design, Detail, and Delivery: What Shapes a Landmark Project",
+  //     excerpt:
+  //       "A closer look at the planning principles and construction priorities that influence truly distinguished developments.",
+  //     date: "24 Feb 2026",
+  //   },
+  // ];
 
-  const articles = [
-    {
-      image: img1,
-      category: "Press Release",
-      title: "A New Standard of Contemporary Living in Jaipur",
-      excerpt:
-        "Discover how thoughtful architecture, premium amenities, and prime urban connectivity are redefining the residential experience.",
-      date: "12 Feb 2026",
-    },
-    {
-      image: img2,
-      category: "Market Insight",
-      title: "Why Premium Real Estate Continues to Lead Buyer Interest",
-      excerpt:
-        "From location value to long-term appreciation, premium projects continue to attract homebuyers seeking both comfort and confidence.",
-      date: "18 Feb 2026",
-    },
-    {
-      image: img3,
-      category: "Project Update",
-      title: "Design, Detail, and Delivery: What Shapes a Landmark Project",
-      excerpt:
-        "A closer look at the planning principles and construction priorities that influence truly distinguished developments.",
-      date: "24 Feb 2026",
-    },
-  ];
+  const galleryImages = mediaData.filter((item) =>item.category==="Gallery") || []
+  const articleImages = mediaData.filter((item) =>item.category==="Article") || []
+ console.log("index",[...galleryImages.map((item,index)=>false)])
+   // [
+  //   { image: img1, title: "Project Launch Event" },
+  //   { image: img2, title: "Site Progress Update" },
+  //   { image: img3, title: "Brand Showcase" },
+  //   { image: img1, title: "Sales Gallery" },
+  //   { image: img2, title: "Luxury Amenities Preview" },
+  //   { image: img3, title: "Architectural Detail" },
+  // ];
 
-  const galleryImages = [
-    { image: img1, title: "Project Launch Event" },
-    { image: img2, title: "Site Progress Update" },
-    { image: img3, title: "Brand Showcase" },
-    { image: img1, title: "Sales Gallery" },
-    { image: img2, title: "Luxury Amenities Preview" },
-    { image: img3, title: "Architectural Detail" },
-  ];
+  useEffect(() => {
+  try {
+      fetch("https://back-bulding-code.onrender.com/media").then((res) => res.json()).then((data) => {
+          console.log("Fetched media data:", data);
+          // You can set this data to state if you want to display it
+          setMediaData(data);
+          const galleryImages = data.filter((item) =>item.category==="Gallery") || []
+          const articleImages = data.filter((item) =>item.category==="Article") || []
+          console.log(galleryDatashowAll.length)
+         setArticleDatashowAll(articleImages.map(() => false));
+         setGalleryDatashowAll(galleryImages.map(() => false));
+
+        })
+        .catch((err) => console.log("Error fetching media data:", err));
+    } catch (error) {
+      console.error("Error in useEffect:", error);
+    }
+  }, []);
+
 
   return (
     <>
       <Header />
-
       <main className="w-full bg-[#f8f6f2] text-[#171717]">
         {/* HERO */}
         <section className="relative pt-32 md:pt-40 pb-16 md:pb-24 overflow-hidden">
@@ -95,11 +121,11 @@ export default function Media() {
                 </p>
                 <p className="text-[16px] leading-7 text-black/75">
                   A clean editorial layout with a luxury real estate visual language.
-                </p>
+                </p> 
               </div>
             </div>
           </div>
-        </section>
+        </section> 
 
         {/* TABS */}
         <section className="pb-10">
@@ -108,11 +134,7 @@ export default function Media() {
               <button
                 onClick={() => setActiveTab("Articles")}
                 className={`relative pb-4 text-[12px] md:text-[13px] uppercase tracking-[0.28em] transition-all duration-300 ${
-                  activeTab === "Articles"
-                    ? "text-black"
-                    : "text-black/40 hover:text-black"
-                }`}
-              >
+                activeTab === "Articles"? "text-black": "text-black/40 hover:text-black"}`}>
                 Articles
                 {activeTab === "Articles" && (
                   <span className="absolute left-0 bottom-0 w-full h-px bg-black"></span>
@@ -123,10 +145,7 @@ export default function Media() {
                 onClick={() => setActiveTab("Gallery")}
                 className={`relative pb-4 text-[12px] md:text-[13px] uppercase tracking-[0.28em] transition-all duration-300 ${
                   activeTab === "Gallery"
-                    ? "text-black"
-                    : "text-black/40 hover:text-black"
-                }`}
-              >
+                    ? "text-black" : "text-black/40 hover:text-black"}`}>
                 Gallery
                 {activeTab === "Gallery" && (
                   <span className="absolute left-0 bottom-0 w-full h-px bg-black"></span>
@@ -141,39 +160,41 @@ export default function Media() {
           <section className="pb-20 md:pb-28">
             <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10">
-                {articles.map((article, index) => (
-                  <article
-                    key={index}
-                    className="group bg-white border border-black/8 overflow-hidden transition-all duration-500 hover:shadow-[0_18px_60px_rgba(0,0,0,0.08)]"
-                  >
-                    <div className="overflow-hidden">
+                {articleImages.map((article, index) => (
+                <article  key={index} className="group bg-white border border-black/8 overflow-hidden transition-all duration-500 hover:shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
+                    <div className="overflow-hidden"> 
                       <div
                         className="w-full h-[320px] md:h-[420px] bg-center bg-cover transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: `url(${article.image})` }}
+                        style={{ backgroundImage: `url(${article.url})` }}
                       ></div>
                     </div>
 
                     <div className="p-6 md:p-7">
                       <div className="flex items-center justify-between gap-4 mb-5">
                         <span className="text-[10px] uppercase tracking-[0.24em] text-black/40">
-                          {article.category}
+                          {article.category} 
                         </span>
                         <span className="text-[12px] text-black/40">
-                          {article.date}
-                        </span>
+                          {new Date(article.createdAt).toLocaleDateString()}
+                         </span>
                       </div>
 
                       <h2 className="text-[24px] md:text-[28px] font-light leading-[1.2] text-[#1a1a1a] mb-4">
                         {article.title}
                       </h2>
 
-                      <p className="text-[15px] leading-7 text-black/58 mb-6">
-                        {article.excerpt}
-                      </p>
+                     {articleDatashowAll[index] ? (
+                        <p className="text-[15px] leading-7 text-black/58 mb-6">
+                          {article.description}
+                        </p>
+                      ) : (
+                        <p className="text-[15px] leading-7 text-black/58 mb-6">
+                          {article.description.substring(0, 50) + "..."}
+                        </p>
+                      )}
 
-                      <button className="inline-flex items-center gap-3 text-[12px] uppercase tracking-[0.22em] text-black border-b border-black pb-1 transition-all duration-300 group-hover:gap-4">
-                        Read Article
-                        <span>+</span>
+                      <button onClick={() => setArticleDatashowAll(articleDatashowAll.map((item, i) => i === index ? !item : item))} className="inline-flex items-center gap-3 text-[12px] uppercase tracking-[0.22em] text-black border-b border-black pb-1 transition-all duration-300 group-hover:gap-4">
+                        {articleDatashowAll[index] ? "Show Less" : "Show More"}
                       </button>
                     </div>
                   </article>
@@ -194,13 +215,12 @@ export default function Media() {
                     className="group overflow-hidden bg-white border border-black/8"
                   >
                     <div className="overflow-hidden">
-                      <img
-                        src={item.image}
+                    <img
+                        src={item.url}
                         alt={item.title}
                         className="w-full h-[320px] md:h-[420px] object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                      />  
                     </div>
-
                     <div className="p-5 md:p-6">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-black/40 mb-2">
                         Gallery
@@ -208,6 +228,18 @@ export default function Media() {
                       <h3 className="text-[22px] md:text-[26px] font-light leading-[1.2] text-[#1a1a1a]">
                         {item.title}
                       </h3>
+                       {galleryDatashowAll[index] ? (
+                        <p className="text-[15px] leading-7 text-black/58 mb-6">
+                          {item.description}
+                        </p>
+                      ) : (
+                        <p className="text-[15px] leading-7 text-black/58 mb-6">
+                          {item.description.substring(0, 50) + "..."}
+                        </p>
+                      )}
+                        <button onClick={() =>setGalleryDatashowAll(galleryDatashowAll.map((item, i) => i === index ? !item : item))} className="inline-flex items-center gap-3 text-[12px] uppercase tracking-[0.22em] text-black border-b border-black pb-1 transition-all duration-300 group-hover:gap-4">
+                        {galleryDatashowAll[index] ? "Show Less" : "Show More"}
+                      </button>
                     </div>
                   </div>
                 ))}

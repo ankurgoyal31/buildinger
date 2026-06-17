@@ -4,6 +4,8 @@ import img2 from '../../assets/history/2.png'
 import img3 from '../../assets/history/3.png'
 import img4 from '../../assets/history/4.png'
 import img5 from '../../assets/history/5.png'
+// import { useEffect,useState } from "react";
+
 const timelineData = [
   {
     // year: "2003",
@@ -53,6 +55,24 @@ const timelineData = [
 ];
 
 export default function HistoryEditorialTimeline() {
+    const [data,setData] = useState([])
+
+  useEffect(() => {
+    
+    try{
+      fetch("https://back-bulding-code.onrender.com/story").then((res) => res.json()).then((data) => {
+          console.log("Fetched media data:", data);
+          let reverse_data = data.reverse()
+           setData(reverse_data);
+           console.log(reverse_data)
+        })
+        .catch((err) => console.log("Error fetching media data:", err));
+
+    }catch(err){
+
+    }
+  }, [])
+
   return (
     <section className="relative overflow-hidden bg-[#f7f2eb] py-16 md:py-20 lg:py-24">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-8">
@@ -76,9 +96,9 @@ export default function HistoryEditorialTimeline() {
           <div className="absolute left-[15px] top-0 h-full w-px bg-[#ddd3c8] md:left-1/2 md:-translate-x-1/2" />
 
           <div className="space-y-16 md:space-y-20 lg:space-y-24">
-            {timelineData.map((item, index) =>
-              item.variant === "featured" ? (
-                <FeaturedTimelineRow key={index} item={item} index={index} />
+            {data[0]?.journeySections?.map((item, index) =>
+              (index+1)%2=== 0 ? (
+                <TimelineRow key={index} item={item} index={index} />
               ) : (
                 <TimelineRow key={index} item={item} index={index} />
               )
@@ -223,7 +243,7 @@ function TimelineRow({ item, index }) {
             <div className="mt-4 h-[1px] w-14 bg-[#cfc4b8]" />
 
             <p className="mt-4 text-[18px] leading-6 text-[#665d55] md:text-[18px] md:leading-7">
-              {item.description}
+              {item.content}
             </p>
           </div>
         </div>
@@ -278,7 +298,7 @@ function FeaturedTimelineRow({ item }) {
               <div className="mt-4 h-[1px] w-16 bg-[#cfc4b8]" />
 
               <p className="mt-4 text-[18px] leading-6 text-[#665d55] md:text-[18px] md:leading-7">
-                {item.description}
+                {item.content}
               </p>
 
               <div className="mt-6 inline-flex items-center gap-3">

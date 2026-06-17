@@ -4,8 +4,34 @@ import { ChevronDown } from "lucide-react";
 export default function Newsletter() {
   const [type, setType] = useState("Real Estate");
   const [open, setOpen] = useState(false);
-
+  const[text,settext] = useState("")
   const options = ["Real Estate", "Career Updates"];
+
+ const submit = async()=>{
+    const show = JSON.parse(localStorage.getItem("show"));
+if(show===false){
+     alert("you have already subscribe")
+ return
+}
+  if(text.trim()===""){
+    alert("fill the required field")
+    return
+  }
+
+    try{
+      let res =  await fetch("https://back-bulding-code.onrender.com/subscribe",{
+        method:'post',
+        headers:{ "Content-Type": "application/json"},
+        body:JSON.stringify({text})
+      })
+if (res.status === 201) {
+  alert("success");
+localStorage.setItem("show",JSON.stringify(false))
+}
+     }catch(err){
+console.log(err)
+    }
+  }
 
   return (
     <section className="py-12 md:py-16 bg-white border-t border-black/6">
@@ -35,21 +61,23 @@ export default function Newsletter() {
           type="email"
           placeholder="Your email address"
           className="flex-1 bg-transparent border-b border-black/20 px-1 py-2 text-[15px] outline-none focus:border-black transition"
+          value={text}
+          onChange={(e)=>settext(e.target.value)}
         />
 
         <div className="relative min-w-[180px] text-left">
-          <button
+          {/* <button
             type="button"
             onClick={() => setOpen(!open)}
             className="w-full flex items-center justify-between border-b border-black/20 px-1 py-2 text-[15px] text-black/70 hover:text-black transition"
           >
             {type}
             <ChevronDown size={16} />
-          </button>
+          </button> */}
 
-          {open && (
-            <div className="absolute left-0 top-full mt-1 w-full bg-white border border-black/10 shadow-sm z-10">
-              {options.map((option) => (
+          {/* {open && ( */}
+            {/* <div className="absolute left-0 top-full mt-1 w-full bg-white border border-black/10 shadow-sm z-10"> */}
+              {/* {options.map((option) => (
                 <div
                   key={option}
                   onClick={() => {
@@ -60,16 +88,16 @@ export default function Newsletter() {
                 >
                   {option}
                 </div>
-              ))}
-            </div>
-          )}
+              ))} */}
+            {/* </div> */}
+          {/* )} */}
         </div>
 
       </div>
 
       {/* BUTTON */}
       <div className="mt-6">
-        <button
+        <button onClick={submit}
           type="submit"
           className="inline-flex items-center gap-3 text-[16px] uppercase tracking-[0.22em] text-black border-b border-black pb-1 hover:gap-4 transition-all duration-300"
         >

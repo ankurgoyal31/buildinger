@@ -10,29 +10,60 @@ import Header from "../Header";
 import Footer from "../Footer";
 import AutoReveal from "./AutoReveal";
 import InstagramSection from "./InstagramSection";
-
+import {useParams} from "react-router-dom";
+import {useEffect,useState} from "react";
 export default function BlogDeatil() {
+const [blogDetails, setBlogDetails] = useState(null);
+    const {id} = useParams();
+    console.log("Blog ID from URL:", id);
+    useEffect(() => {
+        try {
+            fetch(`https://back-bulding-code.onrender.com/blogs/${id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("Fetched blog details:", data);
+                    setBlogDetails(data);
+                })
+                .catch((err) => console.log("Error fetching blog details:", err));
+        } catch (error) {
+            console.error("Error in useEffect:", error);
+        }
+    }, [id]);
+
   return (
     <>
-      <Header />
-      <div className="w-full px-6 pt-30">
+    <Header/>
+      <div style={{marginTop:'120px'}} className="w-full px-6 pt-30">
         <div className="grid items-center max-w-full grid-cols-1 gap-10 mx-auto md:grid-cols-2">
           <div className="px-4 text-left">
             <h2 className="text-5xl font-light leading-relaxed tracking-wide">
-              Woods recommended for double-door
-              <br /> fitted wardrobes
+              {blogDetails?.title || "Woods recommended for double-doors"}
+              <br/>
             </h2>
-          </div>
+            {/* <br></br> */}
+          {/* show date */}
+          <div>
+  {/* <h2>content</h2> */}
+  <p className="max-w-2xl " style={{ letterSpacing: "1px" }}>
+    {blogDetails?.content || "Content for the blog post."}
+   </p>
+</div>
+          {/* <h3>Date</h3> */}
+            <p style={{ letterSpacing: "4px",marginTop:'20px' }} className="text-sm text-gray-500">
+              {new Date(blogDetails?.createdAt).toLocaleDateString()|| "Date for the blog post."}
+            </p>
+           </div>
 
           <div>
-            <img src={imgMain} className="object-cover w-full" alt="" />
+            <img src={blogDetails?.main_blog_image || imgMain} className="object-cover w-full" alt="" />
           </div>
         </div>
 
+ 
         <div className="max-w-2xl mx-auto mt-16 text-center">
           <h2 className="mb-4 text-3xl font-light">
             Why is real estate booming in India?
-          </h2>
+          </h2> 
 
           <p
             className="mb-3 text-lg font-medium"
@@ -50,15 +81,14 @@ export default function BlogDeatil() {
           </p>
         </div>
 
-        <div className="grid max-w-6xl grid-cols-1 gap-10 mx-auto mt-16 md:grid-cols-3">
-          <img src={imgA} className="w-full" alt="" />
-          <img src={imgB} className="w-full" alt="" />
-          <img src={imgC} className="w-full" alt="" />
-        </div>
-
+<div className="grid max-w-6xl grid-cols-1 gap-10 mx-auto mt-16 md:grid-cols-3"> 
+        {blogDetails?.images.length>0 && blogDetails.images.map((image, index) => (
+             <img src={image} className="w-full" alt="" />
+         ))} 
+</div>
         <div className="max-w-2xl mx-auto mt-16 text-center">
           <p className="mb-3 text-lg font-medium uppercase">
-            Experience Over Exposure
+            Experience Over Exposure  
           </p>
 
           <p className="text-sm leading-relaxed text-gray-600">
@@ -77,11 +107,10 @@ export default function BlogDeatil() {
           </h2>
         </div>
 
-        <div className="mx-auto grid grid-cols-1 md:grid-cols-[40%_60%] gap-10 mt-16">
-          <img src={imgD} className="object-cover w-full" alt="" />
-
-          <img src={imgE} className="object-cover w-full h-full" alt="" />
-        </div>
+<div className="mx-auto grid grid-cols-1 md:grid-cols-[40%_60%] gap-10 mt-16">
+          <img src={blogDetails?.project_detail_image_1|| imgMain} className="object-cover w-full h-full" alt="" />
+          <img src={blogDetails?.project_detail_image_2|| imgE} className="object-cover w-full h-full" alt=""/>
+         </div>
 
         <div className="max-w-2xl mx-auto mt-20 text-center">
           <p className="mb-3 text-sm font-medium uppercase">

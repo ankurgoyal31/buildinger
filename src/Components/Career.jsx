@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Header from "../Header";
 import Footer from "../Footer";
 import AutoReveal from "./AutoReveal";
@@ -12,147 +12,298 @@ const jobsData = [
     title: "Sales Executive",
     department: "Sales",
     experience: "1 to 3 years",
-    description:
+   content:
       "Drive lead conversion, client engagement, and site visit coordination for residential projects.",
   },
   {
     title: "Channel Sales Manager",
     department: "Sales",
     experience: "4 to 7 years",
-    description:
+   content:
       "Manage channel partner networks, relationships, and partner-driven business development.",
   },
   {
     title: "CRM Executive",
     department: "Customer Relations",
     experience: "1 to 3 years",
-    description:
+   content:
       "Handle customer communication, follow-ups, documentation, and support across buyer journeys.",
   },
   {
     title: "Site Engineer",
     department: "Execution",
     experience: "2 to 5 years",
-    description:
+   content:
       "Supervise site activities, coordinate teams, and ensure quality and timeline adherence.",
   },
   {
     title: "Civil Engineer",
     department: "Construction",
     experience: "2 to 6 years",
-    description:
+   content:
       "Support structural execution, planning, site coordination, and material management.",
   },
   {
     title: "Architect",
     department: "Design",
     experience: "3 to 6 years",
-    description:
+   content:
       "Contribute to planning, design detailing, layout refinement, and project visualization.",
   },
   {
     title: "Project Manager",
     department: "Project Management",
     experience: "6 to 10 years",
-    description:
+   content:
       "Lead project timelines, teams, execution strategy, and cross-functional coordination.",
   },
   {
     title: "Marketing Executive",
     department: "Marketing",
     experience: "1 to 4 years",
-    description:
+   content:
       "Support campaigns, media coordination, branding initiatives, and project promotions.",
   },
   {
     title: "Accounts Executive",
     department: "Finance",
     experience: "1 to 4 years",
-    description:
+   content:
       "Handle billing, records, reconciliations, reporting, and finance-related documentation.",
   },
   {
     title: "Admin",
     department: "Administration",
     experience: "1 to 3 years",
-    description:
+   content:
       "Manage office administration, support operations, and maintain workflow coordination.",
   },
   {
     title: "Other (Specify)",
     department: "General",
     experience: "Open",
-    description:
+   content:
       "Share your profile and area of expertise if you do not see a suitable role listed above.",
   },
 ];
 
-const lifeAtUB = [
+
+ 
+ 
+
+export default function CareerPage() {
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [showAll, setShowAll] = useState(false);
+const[data,setdata] = useState([])
+
+const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  phone: "",
+  experience: "",
+});
+
+const [cv, setCv] = useState(null);
+
+const jobsData = [
+  {
+    title: "Sales Executive",
+    department: "Sales",
+    experience: "1 to 3 years",
+   content:
+      "Drive lead conversion, client engagement, and site visit coordination for residential projects.",
+  },
+  {
+    title: "Channel Sales Manager",
+    department: "Sales",
+    experience: "4 to 7 years",
+   content:
+      "Manage channel partner networks, relationships, and partner-driven business development.",
+  },
+  {
+    title: "CRM Executive",
+    department: "Customer Relations",
+    experience: "1 to 3 years",
+   content:
+      "Handle customer communication, follow-ups, documentation, and support across buyer journeys.",
+  },
+  {
+    title: "Site Engineer",
+    post: "Execution",
+    experience: "2 to 5 years",
+    content:
+      "Supervise site activities, coordinate teams, and ensure quality and timeline adherence.",
+  },
+  {
+    title: "Civil Engineer",
+    department: "Construction",
+    experience: "2 to 6 years",
+   content:
+      "Support structural execution, planning, site coordination, and material management.",
+  },
+  {
+    title: "Architect",
+    department: "Design",
+    experience: "3 to 6 years",
+   content:
+      "Contribute to planning, design detailing, layout refinement, and project visualization.",
+  },
+  {
+    title: "Project Manager",
+    department: "Project Management",
+    experience: "6 to 10 years",
+   content:
+      "Lead project timelines, teams, execution strategy, and cross-functional coordination.",
+  },
+  {
+    title: "Marketing Executive",
+    department: "Marketing",
+    experience: "1 to 4 years",
+   content:
+      "Support campaigns, media coordination, branding initiatives, and project promotions.",
+  },
+  {
+    title: "Accounts Executive",
+    department: "Finance",
+    experience: "1 to 4 years",
+   content:
+      "Handle billing, records, reconciliations, reporting, and finance-related documentation.",
+  },
+  {
+    title: "Admin",
+    department: "Administration",
+    experience: "1 to 3 years",
+   content:
+      "Manage office administration, support operations, and maintain workflow coordination.",
+  },
+  {
+    title: "Other (Specify)",
+    department: "General",
+    experience: "Open",
+   content:
+      "Share your profile and area of expertise if you do not see a suitable role listed above.",
+  },
+];
+
+const visibleJobs = showAll ?  data[0]?.dynamicSections : data[0]?.dynamicSections.slice(0, 6);
+
+useEffect(() => {
+  try{
+fetch("https://back-bulding-code.onrender.com/careers").then((res) => res.json()).then((data) => {
+          console.log("Fetched media data:", data);
+          // let reverse_data = data.reverse()
+           setdata(data);
+        })  }catch(err){
+    console.log(err)
+  }
+}, [])
+
+const whyJoin = [
+  {
+    title: "Career Growth",
+    text: data[0]?.content1 || "Long-term career growth opportunities with meaningful leadership exposure.",
+    icon: "▣",
+  },
+  {
+    title: "Work Culture",
+    text: data[0]?.content2||"Collaborative and supportive teams driven by shared ambition and execution.",
+    icon: "✦",
+  },
+  {
+    title: "Learning & Development",
+    text: data[0]?.content3 || "Continuous learning programs and professional development pathways.",
+    icon: "◈",
+  },
+];
+
+
+
+const expectations = [
+  {
+    title: "Ownership",
+    text:data[0]?.content5 || "People who take responsibility and move work forward with confidence.",
+  },
+  {
+    title: "Integrity",
+    text: data[0]?.content6 || "Professionals who value trust, ethics, and long-term credibility.",
+  },
+  {
+    title: "Creativity",
+    text:data[0]?.content7 || "Fresh thinkers who can solve challenges with smart practical ideas.",
+  },
+  {
+    title: "Execution",
+    text:data[0]?.content8 || "Individuals who believe in discipline, delivery, and consistency.",
+  },
+  {
+    title: "Collaboration",
+    text: data[0]?.content9 ||"Team players who communicate clearly and work well across functions.",
+  },
+];
+
+const lifeAtUB =  data[0]?.Side_Sections?.length > 0 ? data[0].Side_Sections : [
   {
     title: "Life",
-    text: "A collaborative environment where teams across design, sales, and execution grow together while shaping meaningful real estate projects.",
+    content: "A collaborative environment where teams across design, sales, and execution grow together while shaping meaningful real estate projects.",
     image:
       "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=2070&auto=format&fit=crop",
   },
   {
     title: "Culture",
-    text: "A culture built on trust, collaboration, and shared ambition, where people grow while contributing to impactful real estate projects.",
+    content: "A culture built on trust, collaboration, and shared ambition, where people grow while contributing to impactful real estate projects.",
    image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=2070&auto=format&fit=crop"
   },
   {
     title: "Training",
-    text: "Continuous development through real project exposure, planning discussions, site learning, and hands-on industry experience.",
+    content: "Continuous development through real project exposure, planning discussions, site learning, and hands-on industry experience.",
     image:
       "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070&auto=format&fit=crop",
   },
 ];
 
-const whyJoin = [
-  {
-    title: "Career Growth",
-    text: "Long-term career growth opportunities with meaningful leadership exposure.",
-    icon: "▣",
-  },
-  {
-    title: "Work Culture",
-    text: "Collaborative and supportive teams driven by shared ambition and execution.",
-    icon: "✦",
-  },
-  {
-    title: "Learning & Development",
-    text: "Continuous learning programs and professional development pathways.",
-    icon: "◈",
-  },
-];
 
-const expectations = [
-  {
-    title: "Ownership",
-    text: "People who take responsibility and move work forward with confidence.",
-  },
-  {
-    title: "Integrity",
-    text: "Professionals who value trust, ethics, and long-term credibility.",
-  },
-  {
-    title: "Creativity",
-    text: "Fresh thinkers who can solve challenges with smart practical ideas.",
-  },
-  {
-    title: "Execution",
-    text: "Individuals who believe in discipline, delivery, and consistency.",
-  },
-  {
-    title: "Collaboration",
-    text: "Team players who communicate clearly and work well across functions.",
-  },
-];
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-export default function CareerPage() {
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [showAll, setShowAll] = useState(false);
+  const data = new FormData();
 
-  const visibleJobs = showAll ? jobsData : jobsData.slice(0, 6);
+  data.append("name", formData.name);
+  data.append("email", formData.email);
+  data.append("phone", formData.phone);
+  data.append("experience", formData.experience);
+  data.append("job", selectedJob.name || selectedJob.title);
+  data.append("post", selectedJob.post || selectedJob.department);
+  data.append("cv", cv);
+
+  try {
+    const response = await fetch("https://back-bulding-code.onrender.com/apply", {
+      method: "POST",
+      body: data,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to submit application");
+    }
+
+    alert("Application Submitted Successfully");
+
+    setSelectedJob(null);
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      experience: "",
+    });
+
+    setCv(null);
+  } catch (err) {
+    console.log(err);
+    alert("Something went wrong. Ensure backend server is running on port 3000.");
+  }
+};
 
   return (
     <>
@@ -162,7 +313,7 @@ export default function CareerPage() {
         {/* HERO */}
         <section
           className="relative min-h-screen bg-cover bg-center bg-no-repeat overflow-hidden pt-24 md:pt-28"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage:  `url(${data[0]?.heroImage})`||`url(${heroImage})` }}
         >
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.68),rgba(0,0,0,0.16),rgba(0,0,0,0.32))]"></div>
@@ -173,13 +324,10 @@ export default function CareerPage() {
                 Careers at Unique Builders
               </p>
               <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-light leading-[0.94] mb-6">
-                Build your future with a team that values ambition, growth, and
-                excellence.
+               {data[0]?.title|| "Build your future with a team that values ambition, growth, and excellence."}
               </h1>
               <p className="max-w-2xl text-white/80 text-[15px] md:text-[17px] leading-8">
-                Join a workplace where design, construction, execution, and
-                business come together through a culture of trust, learning, and
-                long-term opportunity.
+                {data[0]?.content||"Join a workplace where design, construction, execution, and business come together through a culture of trust, learning, and long-term opportunity."}
               </p>
             </div>
           </div>
@@ -247,7 +395,7 @@ export default function CareerPage() {
                           {item.title}
                         </h3>
                         <p className="text-[14px] leading-6 text-black/55">
-                          {item.text}
+                          {item.content}
                         </p>
                       </div>
                     </div>
@@ -267,12 +415,10 @@ export default function CareerPage() {
                   What we are looking for
                 </p>
                 <h2 className="text-2xl md:text-4xl font-light leading-[1.06] text-[#171717] mb-5">
-                  What you can expect and what we value.
+                 {data[0]?.title1 || "What you can expect and what we value."}
                 </h2>
                 <p className="text-[15px] md:text-[16px] leading-8 text-black/55">
-                  We look for professionals who combine sharp thinking with
-                  strong execution, value trust, and are ready to contribute to
-                  landmark developments with seriousness and intent.
+                 {data[0]?.content4 || "We look for professionals who combine sharp thinking with strong execution, value trust and are ready to contribute to landmark developments with seriousness and intent."}
                 </p>
               </div>
 
@@ -288,7 +434,7 @@ export default function CareerPage() {
                     <h3 className="text-[18px] font-light text-[#171717] mb-3">
                       {item.title}
                     </h3>
-                    <p className="text-[14px] leading-7 text-black/55">
+                    <p className="text-[14px] leading-7 text-black/55 break-all">
                       {item.text}
                     </p>
                   </div>
@@ -312,31 +458,31 @@ export default function CareerPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {visibleJobs.map((job, index) => (
+              {visibleJobs?.length>0 ?visibleJobs?.map((job, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedJob(job)}
                   className="text-left bg-[#fbfbfb] border border-black/8 p-7 transition-all duration-300 hover:shadow-[0_14px_40px_rgba(0,0,0,0.06)] hover:bg-white"
                 >
                   <h3 className="text-[22px] font-light text-[#0097e6] mb-3">
-                    {job.title}
+                    {job.name}
                   </h3>
 
                   <p className="text-[11px] uppercase tracking-[0.24em] text-black/45 mb-4">
-                    {job.department}
+                    {job.post}
                   </p>
 
                   <div className="w-24 h-px bg-black/30 mb-4"></div>
 
                   <p className="text-[13px] uppercase tracking-[0.18em] text-black/45 mb-4">
-                    Experience {job.experience}
+                    {job.experience}
                   </p>
 
                   <p className="text-[15px] leading-7 text-black/55">
-                    {job.description}
+                    {job.content}
                   </p>
                 </button>
-              ))}
+              )):<><div style={{position:'absolute',textAlign:'center',width:'80%'}} className=""><p>Currently No Jobs Available</p></div></>}
             </div>
 
             {jobsData.length > 6 && (
@@ -372,7 +518,7 @@ export default function CareerPage() {
                   title: "General Application",
                   department: "Open Application",
                   experience: "Open",
-                  description: "Submit your profile for future opportunities.",
+                 content: "Submit your profile for future opportunities.",
                 })
               }
               className="border border-white/30 px-8 py-3 text-sm uppercase tracking-[0.18em] hover:bg-white hover:text-black transition-all duration-300"
@@ -405,7 +551,7 @@ export default function CareerPage() {
           </p>
 
           <h2 className="text-2xl md:text-3xl font-light text-[#171717] mb-4">
-            {selectedJob.title}
+            {selectedJob.name}
           </h2>
 
           <div className="mb-6">
@@ -413,7 +559,7 @@ export default function CareerPage() {
               Department
             </p>
             <p className="text-[15px] text-black/70">
-              {selectedJob.department}
+              {selectedJob.post}
             </p>
           </div>
 
@@ -428,10 +574,10 @@ export default function CareerPage() {
 
           <div>
             <p className="text-[12px] uppercase tracking-[0.2em] text-black/40 mb-2">
-              Description
+             content
             </p>
             <p className="text-[15px] leading-7 text-black/65">
-              {selectedJob.description}
+              {selectedJob.content}
             </p>
           </div>
         </div>
@@ -446,13 +592,13 @@ export default function CareerPage() {
             Apply Now
           </h2>
 
-          <form className="space-y-5">
-            <input
+<form className="space-y-5" onSubmit={handleSubmit}>
+              {/* <input
               type="text"
               placeholder="Full Name"
               className="w-full border-b border-black/15 px-0 py-3 outline-none text-[15px]"
             />
-            <input
+            <input 
               type="email"
               placeholder="Email Address"
               className="w-full border-b border-black/15 px-0 py-3 outline-none text-[15px]"
@@ -473,14 +619,68 @@ export default function CareerPage() {
               placeholder="Tell us briefly about your experience"
               rows={4}
               className="w-full border border-black/12 px-4 py-4 outline-none text-[15px] resize-none"
-            />
+            /> */}
 
-            <label className="w-full flex flex-col items-center justify-center border border-dashed border-black/20 p-8 cursor-pointer hover:border-black transition-all duration-300">
+<input
+  type="text"
+  placeholder="Full Name"
+  value={formData.name}
+  onChange={(e) =>
+    setFormData({ ...formData, name: e.target.value })
+  }
+  className="w-full border-b border-black/15 px-0 py-3 outline-none text-[15px]"
+/>
+
+<input
+  type="email"
+  placeholder="Email Address"
+  value={formData.email}
+  onChange={(e) =>
+    setFormData({ ...formData, email: e.target.value })
+  }
+  className="w-full border-b border-black/15 px-0 py-3 outline-none text-[15px]"
+/>
+
+<input
+  type="tel"
+  placeholder="Mobile Number"
+  value={formData.phone}
+  onChange={(e) =>
+    setFormData({ ...formData, phone: e.target.value })
+  }
+  className="w-full border-b border-black/15 px-0 py-3 outline-none text-[15px]"
+/>
+
+<textarea
+  placeholder="Tell us briefly about your experience"
+  rows={4}
+  value={formData.experience}
+  onChange={(e) =>
+    setFormData({ ...formData, experience: e.target.value })
+  }
+  className="w-full border border-black/12 px-4 py-4 outline-none text-[15px] resize-none"
+/>
+
+            {/* <label className="w-full flex flex-col items-center justify-center border border-dashed border-black/20 p-8 cursor-pointer hover:border-black transition-all duration-300">
               <input type="file" className="hidden" />
               <p className="text-sm text-black/55">
                 Click to upload your CV (PDF, DOC, DOCX)
               </p>
-            </label>
+            </label> */}
+
+
+<label className="w-full flex flex-col items-center justify-center border border-dashed border-black/20 p-8 cursor-pointer hover:border-black transition-all duration-300">
+  <input
+    type="file"
+    className="hidden"
+    accept=".pdf,.doc,.docx"
+    onChange={(e) => setCv(e.target.files[0])}
+  />
+
+  <p className="text-sm text-black/55">
+    {cv ? cv.name : "Click to upload your CV (PDF, DOC, DOCX)"}
+  </p>
+</label>
 
             <button className="w-full bg-black text-white py-4 text-sm uppercase tracking-[0.18em] hover:opacity-90 transition">
               Submit Application

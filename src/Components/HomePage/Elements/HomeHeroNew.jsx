@@ -22,6 +22,21 @@ const slides = [
 
 const HomeHero = () => {
   const [active, setActive] = useState(0);
+const [data,setdata] = useState([])
+
+ useEffect(() => {
+     try{
+       fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+           console.log("Fetched media data:", data);
+             setdata(data);
+          })
+         .catch((err) => console.log("Error fetching media data:", err));
+ 
+     }catch(err){
+ 
+     }
+ 
+   }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,20 +46,36 @@ const HomeHero = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const slide = slides[active];
+const slide = slides[active];
+
+console.log(data[0]?.herovideo);
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Background Video */}
-      <video
+      {/* <video
         autoPlay
         loop
         muted
         playsInline
         className="absolute inset-0 object-cover w-full h-full"
       >
-        <source src={heroVideo} type="video/mp4" />
-      </video>
+        <source src={data[0]?.herovideo || heroVideo} type="video/mp4" />
+      </video> */}
+
+<video
+  key={data[0]?.herovideo || "default-video"}
+  autoPlay
+  loop
+  muted
+  playsInline
+  className="absolute inset-0 object-cover w-full h-full"
+>
+  <source
+    src={data[0]?.herovideo || heroVideo}
+    type="video/mp4"
+  />
+</video>
 
       {/* Overlay */}
       {/* <div className="absolute inset-0 bg-black/40" /> */}

@@ -13,6 +13,7 @@ import Header from "../Header";
 import Footer from "../Footer";
 import AutoReveal from "../Components/AutoReveal";
 import InstagramSection from "./InstagramSection";
+import { useEffect,useState } from "react";
 import {
   ShieldCheck,
   BadgeCheck,
@@ -46,21 +47,22 @@ const swiperCss = `
 
 export default function AboutUsPage() {
   const certIcons = [ShieldCheck, Award, BadgeCheck, CheckCircle2, FileCheck];
-
+  const [data,setData] = useState([])
+  
   const stakeholders = [
     {
       role: "Leadership",
-      name: "Mr. Abhishek Pal Singh",
+      name: data[0]?.title2,
       post: "Vice Chairman",
-      image: dir1,
-      text: "Driving strategic direction with a strong focus on scale, trust, and long-term value creation, he plays a key role in shaping the group’s growth while reinforcing its commitment to quality, credibility, and future-ready development.",
+      image: data[0]?.image2||dir1,
+      text:data[0]?.content2 || "Driving strategic direction with a strong focus on scale, trust, and long-term value creation, he plays a key role in shaping the group’s growth while reinforcing its commitment to quality, credibility, and future-ready development.",
     },
     {
       role: "Leadership",
-      name: "Mr. Vibhishek Pal Singh",
+      name: data[0]?.title3 || "Mr. Vibhishek Pal Singh",
       post: "Managing Director",
-      image: dir2,
-      text: "With a vision rooted in innovation and execution, he leads the business with clarity and ambition, ensuring that every project reflects thoughtful planning, customer confidence, and the group’s evolving leadership in real estate.",
+      image: data[0]?.image3||dir2,
+      text: data[0]?.content3 || "With a vision rooted in innovation and execution, he leads the business with clarity and ambition, ensuring that every project reflects thoughtful planning, customer confidence, and the group’s evolving leadership in real estate.",
     },
   ];
 
@@ -167,6 +169,23 @@ export default function AboutUsPage() {
     "Structured project governance",
   ];
 
+  useEffect(() => {
+    
+    try{
+      fetch("https://back-bulding-code.onrender.com/story").then((res) => res.json()).then((data) => {
+          console.log("Fetched media data:", data);
+          let reverse_data = data.reverse()
+           setData(reverse_data);
+           console.log(reverse_data)
+        })
+        .catch((err) => console.log("Error fetching media data:", err));
+
+    }catch(err){
+
+    }
+
+  }, [])
+  
   return (
     <>
       <style>{swiperCss}</style>
@@ -176,7 +195,7 @@ export default function AboutUsPage() {
         {/* 1. HOME BANNER */}
         <section className="relative min-h-screen overflow-hidden pt-24 md:pt-28">
           <img
-            src={bannerImg}
+            src={data[0]?.heroImage || bannerImg}
             alt="About Banner"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -192,10 +211,10 @@ export default function AboutUsPage() {
           <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 min-h-screen flex items-end pb-16 md:pb-20">
             <div className="max-w-5xl text-white">
               <p className="mb-5 text-[17px] uppercase tracking-[0.32em] text-white/65">
-                About Unique Builders
+                  About Unique Builders
               </p>
               <h1 className="text-3xl md:text-5xl lg:text-5xl font-light leading-[0.92] mb-6">
-                A legacy of trust, ambition, and landmark development.
+               {data[0]?.title || "A legacy of trust, ambition, and landmark development."}
               </h1>
               <p className="max-w-2xl text-[14px] md:text-[16px] mb-8 mt-[-16px] leading-7 text-white/80">
                 We create more than spaces—we build value, community, and lasting trust.
@@ -216,9 +235,7 @@ export default function AboutUsPage() {
 </div>  
                 <div className="px-6 py-10 md:px-10 md:py-12">
                   <h2 className="text-lg md:text-2xl lg:text-3xl font-light leading-[1.2] text-[#171717]">
-                    “We do not just build projects. We create trust, shape
-                    communities, and leave behind a legacy people are proud to
-                    belong to.”
+                   {data[0]?.content || "We do not just build projects. We create trust, shapecommunities, and leave behind a legacy people are proud tobelong to."}
                   </h2>
                 </div>
               </div>
@@ -236,33 +253,28 @@ export default function AboutUsPage() {
                     Introduction
                   </p>
                   <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-[1.02] mb-8">
-                    A group defined by scale, consistency, and long-term value.
+                  {data[0]?.title1 || "A group defined by scale, consistency, and long-term value."}
                   </h2>
 
                   <div className="space-y-6 text-[14px] md:text-[15px] leading-7 text-black/60">
                     <p>
-                      Founded with a vision to create meaningful developments,
-                      Unique Builders has grown into a trusted real estate name
-                      recognized for quality, strong planning, and customer
-                      confidence. Through the years, the group has strengthened
-                      its presence across multiple cities and project
-                      categories.
+                     {data[0]?.content1 || "Founded with a vision to create meaningful developments, Unique Builders has grown into a trusted real estate name recognized for quality, strong planning, and customer confidence. Through the years, the group has strengthened its presence across multiple cities and project categories."}
                     </p>
 
-                    <p>
+                    {/* <p>
                       The group’s USP lies in combining trust, design thinking,
                       execution discipline, and long-term value creation. Its
                       journey includes major developments, respected market
                       presence, and collaborations that continue to reinforce
                       its position in the industry.
-                    </p>
+                    </p> */}
                   </div>
                 </div>
 
                 <div className="space-y-6">
                   <div className="overflow-hidden border border-black/8 bg-white">
                     <img
-                      src={img1}
+                      src={data[0]?.image1}
                       alt="Group Introduction"
                       className="w-full h-[420px] md:h-[520px] object-cover"
                     />
@@ -342,7 +354,7 @@ export default function AboutUsPage() {
 
   {/* GRID WITHOUT CARDS */}
   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-y-14 md:gap-y-20 gap-x-8 md:gap-x-12">
-    {managementTeam.map((member, index) => (
+    {data[0]?.dynamicSections?.map((member, index) => (
       <div key={index} className="text-center max-w-sm mx-auto">
         
         {/* IMAGE */}
@@ -366,7 +378,7 @@ export default function AboutUsPage() {
 
         {/* TEXT */}
         <p className="text-[14px] leading-7 text-black/58">
-          {member.text}
+          {member.content}
         </p>
       </div>
     ))}

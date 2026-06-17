@@ -10,7 +10,7 @@ import "swiper/css/effect-fade";
 import video from "../assets/walkthrough/IS Paradise.mp4";
 import AutoReveal from "./AutoReveal";
 import InstagramSection from "./InstagramSection";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShowerHead } from "lucide-react";
 
 import plan2 from '../assets/gallery/IsParadise/plan/1.png'
 import plan3 from '../assets/gallery/IsParadise/plan/2.png'
@@ -54,6 +54,7 @@ export default function ProjectDetail() {
   const [openFAQ, setOpenFAQ] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const[videoUrl,setVideoUrl]=useState([]);
+  const[locationMapLink,setLocationMapLink]=useState("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -67,24 +68,20 @@ export default function ProjectDetail() {
     // Turn any item into a slider by providing an array of image URLs / imports.
     {
       label: "Plans",
-      img:videoUrl[0]?.floorPlanImages,
+      img:videoUrl[0]?.masterPlanImages?.length > 0 ? videoUrl[0]?.masterPlanImages : ["https://img.magnific.com/free-vector/no-data-concept-illustration_114360-536.jpg"]  ,
     },
     {
       label: "Amenities",
-      img:videoUrl[0]?.masterPlanImages,
+      img:videoUrl[0]?.floorPlanImages?.length > 0 ? videoUrl[0]?.floorPlanImages : ["https://img.magnific.com/free-vector/no-data-concept-illustration_114360-536.jpg"]  ,
     },
     {
       label: "Location",
-      img: location,
+      img:location,
     },
     {
       label: "Gallery",
-      img: videoUrl[0]?.facilitiesNearbyImages,
+      img: videoUrl[0]?.facilitiesNearbyImages?.length > 0 ? videoUrl[0]?.facilitiesNearbyImages : ["https://img.magnific.com/free-vector/no-data-concept-illustration_114360-536.jpg"],
     },
-    {
-      label: "Construction",
-      img:videoUrl[0]?.constructionUpdateImages,
-    }, 
   ]; 
 
   console.log("showcase items ",showcaseItems[0]);
@@ -97,51 +94,44 @@ export default function ProjectDetail() {
   const activeShowcaseIndex = showcaseItems.findIndex(
     (item) => item.label === activeShowcase,
   );
-
   // ---- NEW: map link + embed URL for Location tab (improved) ----
   const MAP_SHORT_LINK = "https://maps.app.goo.gl/qvp2BhAjUssJgx3v5";
-  // Full embed src copied from Google Maps → Share → Embed a map:
-  const MAP_EMBED_SRC =
-    "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3558.0416859980805!2d75.7742245!3d26.9021721!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db46efb1eaf25%3A0x70a50618b4db7a87!2sUnique%20IS%20Paradise!5e0!3m2!1sen!2sin!4v1777007476147!5m2!1sen!2sin";
-
+  
   const mapEmbedUrl = useMemo(() => {
     if (activeShowcase !== "Location") return null;
-    // Use exact embed src if provided (keeps marker/center/zoom)
-    if (MAP_EMBED_SRC) return MAP_EMBED_SRC;
-    const link =
+    
+    // Get link from API or fallback
+    const link = videoUrl[0]?.locationMapLink || 
       project?.googleMapsLink ||
       project?.locationLink ||
       project?.locationMapUrl ||
-      project?.mapUrl ||
-      MAP_SHORT_LINK ||
+      project?.mapUrl || 
       project?.location ||
       project?.address ||
-      null;
+      MAP_SHORT_LINK;
+      
     if (!link) return null;
+    
+    // If it's already an embed URL, return it
+    if (link.includes("/embed") || link.includes("output=embed")) {
+      return link;
+    }
+    
     // If link is a "lat,lng" pair (e.g. "26.9145,75.7878") embed using coords.
     const latLngMatch = String(link).match(/(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/);
     if (latLngMatch) {
       const q = encodeURIComponent(`${latLngMatch[1]},${latLngMatch[2]}`);
       return `https://www.google.com/maps?q=${q}&z=17&output=embed`;
     }
+    
     // Fallback: use link as query
     const q = encodeURIComponent(link);
     return `https://www.google.com/maps?q=${q}&z=17&output=embed`;
-  }, [activeShowcase, project]);
+  }, [activeShowcase, project, videoUrl]);
 
-  //==============================STATIC SHOWCASE END==============================
-  // useEffect(() => {
-  //   fetch(`${BASE_URL}/api/projects/${slug}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       // console.log("Project fetch response:", data.data);
-  //       if (data.success) setProject(data.data);
-  //     })
-  //     .catch((err) => console.error("Project fetch error:", err));
-  // }, [slug]);
 
 useEffect(() => {
-  fetch(`http://127.0.0.1:5000/projects_video/${slug}`)
+  fetch(`https://back-bulding-code.onrender.com/projects_video/${slug}`) 
     .then((res) => res.json())
     .then((data) => {
       console.log("FULL RESPONSE:", data);
@@ -150,11 +140,14 @@ useEffect(() => {
         console.log("VIDEO URL:", data);
         setVideoUrl([data]);
         setProject(data);
+    //  setLocationMapLink(data?.locationMapLink || data?.location || data?.address || "");
+// setLocationMapLink(projectData?.locationMapLink || projectData?.location || projectData?.address || "");
       // } 
-    }) 
+    })
     .catch((err) => console.error("Project fetch error:", err));
 }, []);
-console.log("video url_<<<<>>> ",videoUrl);
+
+console.log("LOCATION MAP LINK: ->>>>>", locationMapLink);
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -176,20 +169,25 @@ console.log("video url->>>> ",videoUrl[0]?.projectVideo);
     if (!project) return [];
     return [
       { label: "Location", img:getImageUrl(project.locationImage) },
-      { label: "Master Plan", img: videoUrl[0]?.masterPlanImage},
-      { label: "Floor Plan", img: videoUrl[0]?.floorPlanImage },
-      { label: "Clubhouse", img: videoUrl[0]?.clubhouseImage },
+      { label: "Master Plan", img: project.masterPlanImage ? getImageUrl(project.masterPlanImage) : null },
+      { label: "Floor Plan", img: project.floorPlanImage ? getImageUrl(project.floorPlanImage) : null },
+      { label: "Clubhouse", img: project.clubhouseImage ? getImageUrl(project.clubhouseImage) : null },
       {
         label: "Nearby Facilities",
-        img: videoUrl[0]?.nearbyFacilitiesImage,
+        img: project.nearbyFacilitiesImage ? getImageUrl(project.nearbyFacilitiesImage) : null,
       },
-      {
-        label: "Construction Update",
-        img: videoUrl[0]?.constructionUpdateImage,
-      },
-    ].filter((tab) => tab.img);
+//      {
+//   label: "Construction",
+//   img:
+//     videoUrl[0]?.constructionUpdateImages?.length > 0
+//       ? videoUrl[0]?.constructionUpdateImages
+//       : [ 
+//           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9APxkj0xClmrU3PpMZglHQkx446nQPG6lA&s",
+//         ],
+// },
+    ].filter((tab) => tab.img);  
   }, [project]);
-
+console.log("media tabs->>>>>>ooollkmkmlcnb ",videoUrl[0]?.constructionUpdateImage);
   useEffect(() => {
     if (
       mediaTabs.length > 0 &&
@@ -248,7 +246,7 @@ console.log("active media item ",videoUrl);
     (acc, group) => acc + group.items.length,
     0,
   );
-
+console.log("feature groups ",videoUrl[0]?.locationMapLink);
   const highlights = useMemo(() => {
     const raw =
       project?.highlights ||
@@ -257,6 +255,9 @@ console.log("active media item ",videoUrl);
       [];
     return Array.isArray(raw) ? raw : [];
   }, [project]);
+
+console.log("LOCATION:", videoUrl[0]?.mapLocationLink || videoUrl[0]?.location || videoUrl[0]?.address);
+console.log("MAP LINK:", videoUrl);
 
   const faqs = useMemo(() => {
     const raw = project?.faqs || [];
@@ -294,7 +295,6 @@ console.log("active media item ",videoUrl);
     <>
       <style>{css}</style>
       <Header />
-
       <main className="bg-[#f8f6f2] text-[#151515]">
         {/* ================= HERO ================= */}
         <section className="relative h-screen min-h-[760px] overflow-hidden">
@@ -312,8 +312,8 @@ console.log("active media item ",videoUrl);
                   <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${img})` }}
-                  />
-                </SwiperSlide>
+                  />   
+                </SwiperSlide>  
               ))}
             </Swiper>
           ) : (
@@ -431,15 +431,15 @@ console.log("active media item ",videoUrl);
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
               <FactStripItem
                 title="Location"
-                value="200 Ft. Main Tonk Road Jaipur"
+                value={videoUrl[0]?.location|| "Prime Location"}
               />
-              <FactStripItem title="Price" value="₹ 1.29* Cr onwards" />
-              <FactStripItem title="Type" value="Apartment" />
-              <FactStripItem title="Bedrooms" value="2 & 3 BHK" />
-              <FactStripItem title="Area" value="4.38 Acres" />
-              <FactStripItem
+              <FactStripItem title="Price" value={videoUrl[0]?.priceRange || "Call for Price"} />
+              <FactStripItem title="Type" value={videoUrl[0]?.category || "default: Apartment"} />
+              <FactStripItem title="Bedrooms" value={videoUrl[0]?.bedrooms || "default: 2 & 3 BHK"} />
+              <FactStripItem title="Area" value={videoUrl[0]?.area || "default: 4.38 Acres"} />
+              <FactStripItem 
                 title="RERA No."
-                value="PRM/KA/RERA/1251/308/PR/110326/008519"
+                value={videoUrl[0]?.reraNumber || "RERA Registered"}
               />
             </div>
           </div>
@@ -468,10 +468,10 @@ console.log("active media item ",videoUrl);
 
                 {/* ✅ NEW SECTION */}
                 <button
-                  onClick={() => scrollToSection("construction")}
+                  onClick={() => scrollToSection("GALLERY")}
                   className="text-[#1b1b1b] hover:text-black transition uppercase"
                 >
-                  Construction
+                  Gallery
                 </button>
 
                 <button
@@ -586,7 +586,7 @@ console.log("active media item ",videoUrl);
       <div style={S.visual} className="pd-visual">
         <div style={S.visualFrame}>
           {/* ===== LOCATION (MAP) ===== */}
-          {activeShowcaseItem.label === "Location" ? (
+           {/* {activeShowcaseItem.label === "Location" ? (
             <div
               key="location-wrap"
               style={{
@@ -597,23 +597,23 @@ console.log("active media item ",videoUrl);
                 background: "#eee",
               }}
             >
-              {mapEmbedUrl ? (
+              {locationMapLink ? (
                 <iframe
-                  src={mapEmbedUrl}
+                  src={locationMapLink}
                   title="Project location"
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "100%", 
                     border: 0,
                     display: "block",
                   }}
                   className="pd-visual-img"
-                  loading="lazy"
+                  loading="lazy"  
                   allowFullScreen
                 />
               ) : (
                 <a
-                  href={MAP_SHORT_LINK}
+                  href={videoUrl[0]?.locationMapLink || project.address || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: "block", width: "100%", height: "100%" }}
@@ -629,59 +629,103 @@ console.log("active media item ",videoUrl);
                   />
                 </a>
               )}
-            </div>
-          ) : (
-            <>
-              {/* ===== SLIDER OR SINGLE IMAGE ===== */}
-              {Array.isArray(activeShowcaseItem.img) ? (
-                <>
-                  <Swiper
-                    modules={[Pagination, Autoplay, Navigation]}
-                    pagination={{ clickable: true }}
-                    navigation={{
-                      nextEl: ".pd-swiper-next",
-                      prevEl: ".pd-swiper-prev",
-                    }}
-                    autoplay={{
-                      delay: 3000,
-                      disableOnInteraction: false,
-                      pauseOnMouseEnter: true,
-                    }}
-                    loop
-                    className="h-full"
-                  >
-                    {activeShowcaseItem.img.map((img, i) => (
-                      <SwiperSlide key={i}>
-                        <img
-                          src={img}
-                          alt={`${activeShowcaseItem.label}-${i}`}
-                          style={S.visualImg}
-                          className="pd-visual-img"
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+            </div>}: ( */}
 
-                  {/* Elegant Arrows */}
-                  {/* Elegant Arrows */}
-<button className="pd-swiper-prev">
-  <ChevronLeft size={22} strokeWidth={1.5} />
-</button>
 
-<button className="pd-swiper-next">
-  <ChevronRight size={22} strokeWidth={1.5} />
-</button>
-                </>
-              ) : (
-                <img
-                  src={activeShowcaseItem.img}
-                  alt={activeShowcaseItem.label}
-                  style={S.visualImg}
-                  className="pd-visual-img"
-                />
-              )}
-            </>
-          )}
+      {activeShowcaseItem.label === "Location" ? (
+  <div
+    key="location-wrap"
+    style={{
+      position: "relative",
+      width: "100%",
+      height: S.visualImg.height,
+      overflow: "hidden",
+      background: "#eee",
+    }}
+  >
+    {mapEmbedUrl ? (
+      <iframe
+        src={mapEmbedUrl}
+        title="Project location"
+        style={{
+          width: "100%",
+          height: "100%", 
+          border: 0,
+          display: "block",
+        }}
+        className="pd-visual-img"
+        loading="lazy"  
+        allowFullScreen
+      />
+    ) : (
+      <a
+        href={videoUrl[0]?.locationMapLink || project?.address || "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ display: "block", width: "100%", height: "100%" }}
+      >
+        <img
+          src={activeShowcaseItem.img}
+          alt="Open location in maps"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      </a>
+    )}
+  </div>
+) : (
+  <>
+    {/* Slider or single image code */}
+    {Array.isArray(activeShowcaseItem.img) ? (
+      <>
+        <Swiper
+          modules={[Pagination, Autoplay, Navigation]}
+          pagination={{ clickable: true }}
+          navigation={{
+            nextEl: ".pd-swiper-next",
+            prevEl: ".pd-swiper-prev",
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          loop
+          className="h-full"
+        >
+          {activeShowcaseItem.img.map((img, i) => (
+            <SwiperSlide key={i}>
+              <img
+                src={img}
+                alt={`${activeShowcaseItem.label}-${i}`}
+                style={S.visualImg}
+                className="pd-visual-img"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        <button className="pd-swiper-prev">
+          <ChevronLeft size={22} strokeWidth={1.5} />
+        </button>
+
+        <button className="pd-swiper-next">
+          <ChevronRight size={22} strokeWidth={1.5} />
+        </button>
+      </>
+    ) : (
+      <img
+        src={activeShowcaseItem.img}
+        alt={activeShowcaseItem.label}
+        style={S.visualImg}
+        className="pd-visual-img"
+      />
+    )}
+  </>
+)}
 
           {/* FOOTER */}
           <div style={S.visualFooter}>
@@ -752,8 +796,11 @@ console.log("active media item ",videoUrl);
                 <div key={i} className="pd-hl-card">
                   <div style={S.hlImgWrap}>
                     <img
-                      src={getImageUrl(item?.image || item?.img || item?.photo)}
-                      alt={item?.title || "Highlight"}
+src={
+  item?.image || item?.img || item?.photo
+    ? getImageUrl(item?.image || item?.img || item?.photo)
+    : "https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg"
+}                      alt={item?.title || "Highlight"}
                       style={S.hlImg}
                       className="pd-hl-img"
                     />
@@ -1378,7 +1425,7 @@ const S = {
     objectFit: "cover",
     display: "block",
     transition: "transform 0.7s ease",
-  },
+   },
   hlOverlay: {
     position: "absolute",
     inset: 0,

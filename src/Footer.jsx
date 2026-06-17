@@ -76,7 +76,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/Aboutus"
+                  href="/ourstory"
                   className="inline-block transition-all duration-300 hover:text-black hover:translate-x-1"
                 >
                   About Us
@@ -84,7 +84,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/blog"
+                  href="/real-estate-journal"
                   className="inline-block transition-all duration-300 hover:text-black hover:translate-x-1"
                 >
                   News & Blogs

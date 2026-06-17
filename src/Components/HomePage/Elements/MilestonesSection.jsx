@@ -5,45 +5,74 @@ import img3 from "../../../assets/milestones/2022.png";
 import img4 from "../../../assets/milestones/2025.png";
 
 export default function MilestonesSection() {
-  const years = ["2002", "2010", "2011", "2013", "2015", "2018", "2024"];
 
-  const milestones = {
+    const [data,setdata] = useState([])
+  
+   useEffect(() => {
+       
+       try{
+         fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+            //  console.log("Fetched media data:", data);
+             let reverse_data = data.reverse()
+              setdata(reverse_data);
+              // console.log(reverse_data)
+           })
+           .catch((err) => console.log("Error fetching media data:", err));
+   
+       }catch(err){
+        
+   console.log(err)
+  
+       }
+   
+     }, [])
+
+  const years =data [0]?.dynamicSections.length>0 ?data [0]?.dynamicSections.map((item)=>item.post):["2002", "2010", "2011", "2013", "2015", "2018", "2024"];
+
+  const milestones = data[0]?.dynamicSections.length>0 ?  data[0]?.dynamicSections?.reduce((acc, item) => {
+    acc[item.post] = {
+      name: item.name,
+      content: item.content,
+      image: item.image,
+    };
+    return acc;
+  }, {}) : {
     2002: {
-      title: "The Foundation",
-      desc: `• The Beginning of a Vision: Established with a commitment to quality and integrity.
+      name: "The Foundation",
+      content: `• The Beginning of a Vision: Established with a commitment to quality and integrity.
 • My Haveli: Launched as our flagship project, setting the benchmark for community living.`,
-      img: img1,
+      image: img1,
     },
     2010: {
-      title: "Reaching New Heights",
-      desc: `• Iconic Landmarks: A landmark year featuring the development of Apex Tower, Golf, and Solitaire, defining the skyline with luxury and precision.`,
-      img: img2,
+      name: "Reaching New Heights",
+      content: `• Iconic Landmarks: A landmark year featuring the development of Apex Tower, Golf, and Solitaire, defining the skyline with luxury and precision.`,
+      image: img2,
     },
     2011: {
-      title: "Revolutionizing Real Estate",
-      desc: `• Umang – Dreams for All: Launched one of Rajasthan’s first truly affordable housing concepts. By introducing quality homes starting at just ₹5 lakhs, we turned the dream of homeownership into a reality for thousands.`,
-      img: img3,
+      name: "Revolutionizing Real Estate",
+      content: `• Umang – Dreams for All: Launched one of Rajasthan’s first truly affordable housing concepts. By introducing quality homes starting at just ₹5 lakhs, we turned the dream of homeownership into a reality for thousands.`,
+      image: img3,
     },
     2013: {
-      title: "Regional Expansion",
-      desc: `• Golf Estate (Jodhpur): Brought world-class leisure to the Sun City. It remains one of the only golf-based residential projects in Rajasthan, blending sport with sophisticated living.`,
-      img: img4,
+      name: "Regional Expansion",
+      content: `• Golf Estate (Jodhpur): Brought world-class leisure to the Sun City. It remains one of the only golf-based residential projects in Rajasthan, blending sport with sophisticated living.`,
+      image: img4,
     },
     2015: {
-      title: "Global Design Standards",
-      desc: `• IS Paradise: A fusion of international architectural aesthetics and modern comfort.
+      name: "Global Design Standards",
+      content: `• IS Paradise: A fusion of international architectural aesthetics and modern comfort.
 • Iridium (Mumbai): Expanded our footprint into the Mumbai market with high-end elevations and cutting-edge design.`,
-      img: img1, // replace if you have new image
+      image: img1, // replace if you have new image
     },
     2018: {
-      title: "Strengthening the Core",
-      desc: `• Garden City (NCR/Neemrana): Solidified our presence in the National Capital Region (NCR) and Neemrana, catering to the growing industrial and residential demand in the corridor.`,
-      img: img2,
+      name: "Strengthening the Core",
+      content: `• Garden City (NCR/Neemrana): Solidified our presence in the National Capital Region (NCR) and Neemrana, catering to the growing industrial and residential demand in the corridor.`,
+      image: img2,
     },
     2024: {
-      title: "The Future of Urban Living",
-      desc: `• City Unique Life: Venturing into expansive plotting townships. We are creating curated spaces that offer the freedom of independent living within a structured, modern community.`,
-      img: img3,
+      name: "The Future of Urban Living",
+      content: `• City Unique Life: Venturing into expansive plotting townships. We are creating curated spaces that offer the freedom of independent living within a structured, modern community.`,
+      image: img3,
     },
   };
 
@@ -94,7 +123,7 @@ export default function MilestonesSection() {
           ref={scrollRef}
           className="flex w-full overflow-hidden snap-x snap-mandatory no-scrollbar"
         >
-          {years.map((year) => (
+          {years?.map((year) => (
             <div
               key={year}
               className="relative flex flex-col items-center flex-shrink-0 w-full gap-8 snap-start md:flex-row"
@@ -108,17 +137,17 @@ export default function MilestonesSection() {
                   {year}
                 </p>
                 <h3 className="mb-4 text-[32px] md:text-[32px] font-light leading-[1.1] text-[#2b2b2b]">
-                  {milestones[year].title}
+                  {milestones[year]?.name}
                 </h3>
                 <p className="text-[16px] md:text-[16px] font-light leading-8 text-gray-700 max-w-xl">
-                  {milestones[year].desc}
+                  {milestones[year]?.content}
                 </p>
               </div>
 
               <div className="relative z-20 md:w-[52%] flex justify-end">
                 <img
-                  src={milestones[year].img}
-                  alt={milestones[year].title}
+                  src={milestones[year]?.image}
+                  alt={milestones[year]?.name}
                   className="w-full max-w-[500px] h-[420px] md:h-[580px] object-cover"
                 />
               </div>

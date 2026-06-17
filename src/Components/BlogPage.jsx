@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import banner from "../assets/img/blogbBanner.jpg";
 import img1 from "../assets/img/a1.png";
@@ -6,7 +6,12 @@ import Header from "../Header";
 import Footer from "../Footer";
 import AutoReveal from "./AutoReveal";
 import InstagramSection from "./InstagramSection";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 const blogPosts = [
   {
     title: "Designing Homes That Feel Timeless",
@@ -41,7 +46,24 @@ const blogPosts = [
 ];
 
 export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
+const [activeCategory, setActiveCategory] = useState("All");
+const [blogs, setBlogs] = useState([]);
+const [activeSlide, setActiveSlide] = useState(0);
+useEffect(() => {
+     try {
+      fetch("https://back-bulding-code.onrender.com/blogs").then((res) => res.json()).then((data) => {
+          console.log("Fetched blogs:", data);
+          let reversedData = data.reverse();
+          console.log("Reversed blogs:", reversedData);
+          setBlogs(reversedData);
+        })
+        .catch((err) => console.log("Error fetching blogs:", err));
+     } catch (error) {
+      console.error("Error in useEffect:", error);
+     }
+    }, []);
+
+    console.log("Blogs state:", blogs);
 
   const categories = [
     "All",
@@ -52,9 +74,11 @@ export default function BlogPage() {
   ];
 
   const filteredPosts = useMemo(() => {
-    if (activeCategory === "All") return blogPosts;
-    return blogPosts.filter((post) => post.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === "All") return blogs;
+    return blogs.filter((post) =>post.category === activeCategory);
+  }, [activeCategory, blogs]);
+
+  console.log("Filtered posts:", activeCategory);
 
   return (
     <>
@@ -62,33 +86,59 @@ export default function BlogPage() {
 
       <main className="w-full bg-[#f8f6f2] text-[#2f2a26]">
         {/* ====== HERO ====== */}
-        <section className="relative min-h-[72vh] md:min-h-[88vh] overflow-hidden">
-          <img
-            src={banner}
-            alt="Blog Banner"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/1"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.45),rgba(0,0,0,0.12),rgba(0,0,0,0.18))]"></div>
+        <section className="relative h-[72vh] md:h-[88vh] w-full overflow-hidden flex flex-col justify-end">
+          {/* Swiper Background */}
+          {blogs.length > 0 ? (
+            <div className="absolute inset-0 z-0">
+              <Swiper
+                modules={[Pagination, Autoplay, EffectFade]}
+                effect="fade"
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 4500 }}
+                loop
+                className="h-full w-full"
+              >
+                {blogs.map((blog) => (
+                  <SwiperSlide key={blog._id} className="relative h-full w-full">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center"
+                      style={{
+                        backgroundImage: `url(${blog.heroImage || blog.main_blog_image || banner})`,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          ) : (
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,#1d1d1d,#434343)] z-0" />
+          )}
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 min-h-[72vh] md:min-h-[88vh] flex items-end pb-14 md:pb-20">
-            <div className="max-w-3xl">
-              <p className="text-white/75 text-[12px] md:text-[12px] uppercase tracking-[0.34em] mb-4">
+          {/* Overlays for better text visibility */}
+          <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.8),rgba(0,0,0,0.2),rgba(0,0,0,0))] z-10 pointer-events-none"></div>
+
+          {/* Hero Content */}
+          <div className="relative z-20 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 w-full pb-16 md:pb-24 pointer-events-none">
+            <div className="max-w-3xl pointer-events-auto">
+              <p className="text-white/80 text-[12px] md:text-[13px] uppercase tracking-[0.34em] mb-4 font-medium drop-shadow-md">
                 Architecture · Design · Lifestyle
               </p>
 
-              <h1 className="text-white text-[36px] sm:text-[46px] md:text-[60px] lg:text-[72px] font-light leading-[0.95] tracking-[-0.02em] mb-5">
+              <h1 className="text-white text-[36px] sm:text-[46px] md:text-[60px] lg:text-[72px] font-light leading-[0.95] tracking-[-0.02em] mb-6 drop-shadow-lg">
                 Journal
               </h1>
 
-              <p className="text-white text-[16px] md:text-[18px] leading-8 max-w-2xl">
-                A space where design insights, creative journeys, and everyday
-                experiences come together. These stories explore homes,
-                communities, and the details that shape the way people live.
+              <p className="text-white/90 text-[16px] md:text-[18px] leading-8 max-w-2xl drop-shadow-md">
+                {blogs[0]?.Banner_content || "A space where design insights, creative journeys, and everyday experiences come together. These stories explore homes, communities, and the details that shape the way people live."}
               </p>
             </div>
           </div>
         </section>
+
+
+ 
+
 
         {/* ====== INTRO BAND ====== */}
         <section className="border-b border-[#ddd4c9] bg-[#f8f6f2]">
@@ -116,16 +166,17 @@ export default function BlogPage() {
         </section>
 
         {/* ====== BLOG GRID ====== */}
-        <section className="bg-[#fcfaf7]">
-  <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-14 md:py-20">
 
-    {/* ===== UNDERLINE CATEGORY TABS ===== */}
-    <div className="flex justify-center gap-8 md:gap-12 mb-16 border-b border-[#ddd4c9] pb-4">
-      {categories.map((category) => {
+              <section style={{paddingBottom:'40px'}} className="sticky top-[76px] z-30 backdrop-blur-md bg-[#f8f6f2]/85 border-y">
+              <div  className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-4">
+     {/* ===== UNDERLINE CATEGORY TABS ===== */}
+                 <div className="flex justify-center  border-b border-[#ddd4c9]">
+          <div className="flex gap-6 md:gap-8 overflow-x-auto py-4 text-[12px] md:text-[12px] tracking-[0.22em] whitespace-nowrap">
+       {categories.map((category) => {
         const isActive = activeCategory === category;
 
         return (
-          <button
+          <button  
             key={category}
             onClick={() => setActiveCategory(category)}
             className={`relative text-[11px] md:text-[12px] uppercase tracking-[0.28em] transition ${
@@ -141,19 +192,19 @@ export default function BlogPage() {
         );
       })}
     </div>
-
+ </div>
     {/* ===== SOFT CARDS GRID ===== */}
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 md:gap-12">
 
-      {filteredPosts.map((post, index) => (
-        <Link key={index} to="/blogdetail" className="group block">
+      {filteredPosts.length > 0 ? filteredPosts.map((post, index) => (
+        <Link key={index} to={`/blogdetail/${post._id}`} className="group block">
 
           <article className="transition-all duration-500 hover:-translate-y-1">
 
-            {/* IMAGE */}
-            <div className="overflow-hidden mb-6">
+            {/* IMAGE */}   
+            <div className="overflow-hidden mb-6 pt-12">
               <img
-                src={post.image}
+                src={post.main_blog_image||"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1920px-No-Image-Placeholder.svg.png"}
                 alt={post.title}
                 className="w-full h-[320px] md:h-[380px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
@@ -161,7 +212,6 @@ export default function BlogPage() {
 
             {/* CONTENT */}
             <div>
-
               <p className="text-[10px] uppercase tracking-[0.28em] text-[#8b8074] mb-3">
                 {post.category}
               </p>
@@ -184,7 +234,9 @@ export default function BlogPage() {
           </article>
 
         </Link>
-      ))}
+      )) : (
+        <p className="text-center text-gray-500 col-span-full pt-12">No blog posts found.</p>
+      )}
 
     </div>
 

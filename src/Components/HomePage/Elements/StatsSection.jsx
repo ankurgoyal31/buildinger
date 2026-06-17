@@ -4,13 +4,34 @@ export default function StatsSection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  const [data,setdata] = useState([])
+  
+   useEffect(() => {
+       
+       try{
+         fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+            //  console.log("Fetched media data:", data);
+             let reverse_data = data.reverse()
+              setdata(reverse_data);
+              // console.log(reverse_data)
+           })
+           .catch((err) => console.log("Error fetching media data:", err));
+   
+       }catch(err){
+        
+   console.log(err)
+  
+       }
+   
+     }, [])
+
   const stats = [
-    { value: 60, suffix: "+", label: "Landmarks Authored" },
-    { value: 40, suffix: "+", label: "Completed" },
-    { value: 13000, suffix: "+", label: "Lives Transformed" },
-    { value: 24, suffix: "", label: "Years of Architectural Stewardship" },
+    { value:data[0]?.title1|| 60, suffix: "+", label: "Landmarks Authored" },
+    { value:data[0]?.title2|| 40, suffix: "+", label: "Completed" },
+    { value:data[0]?.title3|| 13000, suffix: "+", label: "Lives Transformed" },
+    { value:data[0]?.title4|| 24, suffix: "+", label: "Years of Architectural Stewardship" },
     {
-      value: 35,
+      value:data[0]?.title5|| 35,
       suffix: "+",
       label: (
         <>

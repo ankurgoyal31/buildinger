@@ -32,9 +32,12 @@ import CSR from "./Components/CSR.jsx";
 import Media from "./Components/Media.jsx";
 import Values from "./Components/Values.jsx";
 
+import NewsletterPopup from "./Components/NewsletterPopup.jsx";
+
 export default function App() {
   return (
     <Router>
+      <NewsletterPopup />
       <Routes>
         {/* Home */}
         <Route path="/" element={<IndexHome />} />
@@ -42,11 +45,11 @@ export default function App() {
 
         {/* Project Details */}
         <Route path="/green-meadows" element={<GreenMeadows />} />
-        <Route path="/is-paradise" element={<ISParadise />} />
+        <Route path="/is-paradise" element={<ISParadise />}/>
         <Route path="/new-town" element={<NewTown />} />
- 
+
         {/* Static Pages */}
-        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects" element={<ProjectsPage />} /> 
         <Route path="/projects/:slug" element={<ProjectsDetails3 />} />
         
         <Route path="/connect" element={<IndexContact />} />
@@ -54,12 +57,11 @@ export default function App() {
         {/* <Route path="/ourstory2" element={<AboutUsPage2 />} /> */}
         <Route path="/real-estate-journal" element={<BlogPage />} />
         <Route path="/our-impact" element={<OurImpactPage />} />
-        <Route path="/blogdetail" element={<BlogDetail />} />
+        <Route path="/blogdetail/:id" element={<BlogDetail />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/t&c" element={<TermsAndConditions />} />
         <Route path="/about-founder" element={<AboutFounderPage />} />
-        <Route path="/sustainblity" element={<EcoLayout />} />
-
+        <Route path="/sustainblity" element={<EcoLayout />}/>
         <Route path="/career" element={<Career />} />
         <Route path="/csr" element={<CSR />} />
         <Route path="/media" element={<Media />} />

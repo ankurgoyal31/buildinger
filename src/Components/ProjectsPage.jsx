@@ -55,15 +55,18 @@ const categories = [
   "RESIDENTIAL",
   "COMMERCIAL",
   "HOSPITALITY",
-  "TOWNSHIP",
-  "UNIQUE SHREE",
+  "PLOTTING TOWNSHIP",
+  "UNIQUE SHREE", 
 ];
 
-const locations = ["ALL", "Jaipur", "Ajmer", "Bhilwara", "Jodhpur"];
+// console.log(allprojects);
+// let locatin_set = 
+// const locations = ["ALL",...location_filter];
 const priceRanges = ["ALL", "50LAC-1CR", "1CR-5CR"];
 const statusOptions = ["ALL", "Completed", "Ongoing", "Upcoming"];
 
 const PROJECTS_CACHE_KEY = "ub_projects_cache_v1";
+
 
 /* ================= CLICKABLE LOGOS ================= */
 const demoLogos = [
@@ -183,11 +186,17 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  let location_filter = allProjects.length>0 ? allProjects.map(p => p.location) : [];
+  location_filter = location_filter.map(loc => loc.trim());
+  location_filter = [...new Set(location_filter)];
+   console.log("loc ",location_filter);
+
+  const locations = ["ALL",...location_filter];
+
   const repeatedLogos = useMemo(() => [...demoLogos, ...demoLogos], []);
   const location = useLocation();
   const navigate = useNavigate();
   const tabsSectionRef = useRef(null);
-
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const categoryFromUrl = searchParams.get("category");
@@ -231,7 +240,7 @@ export default function ProjectsPage() {
         return false;
       }
     };
-
+console.log("fetching projects from API...",allProjects);
     const fetchProjects = async () => {
       const hadCache = loadCachedProjects();
 
@@ -243,7 +252,7 @@ export default function ProjectsPage() {
 
       try {
         // const res = await fetch("/proxy-api/api/projects", {
-         const res = await fetch("http://127.0.0.1:5000/projects", {
+         const res = await fetch("https://back-bulding-code.onrender.com/projects", {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -278,7 +287,7 @@ export default function ProjectsPage() {
         if (!hadCache) {
           try {
             // const retryRes = await fetch("/proxy-api/api/projects", {
-                const retryRes = await fetch("http://127.0.0.1:5000/projects", {
+                const retryRes = await fetch("https://back-bulding-code.onrender.com/projects", {
               method: "GET",
               headers: {
                 Accept: "application/json",
@@ -363,10 +372,20 @@ export default function ProjectsPage() {
       .reverse();
   }, [allProjects, activeTab, locFilter, statusFilter, priceFilter]);
 
-  return (
-    <>
-      <Header />
+  // console.log("filtered projects ", filtered,activeTab);
 
+  const filteredy = allProjects
+  .filter((p) => {
+    console.log("PROJECT CATEGORY =", p.category);
+    return p.category === activeTab;
+  });
+
+  console.log("ACTIVE TAB =", activeTab);
+console.log("data->",allProjects?.find(p => p.slug === "testima8"));
+  return (
+    <>  
+      <Header />
+ 
       <div className="w-full bg-white pt-24">
         <h1 className="mb-20 text-4xl font-light tracking-widest text-center mt-20">
           OUR PROJECTS

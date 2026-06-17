@@ -15,7 +15,6 @@ export default function ManagementSection() {
   ];
 
   const managementNames = ["Iqbal Singh", "Rahul", "Aashita", "Aasish"];
-
   return (
     <AutoReveal>
       <section className="pb-20">

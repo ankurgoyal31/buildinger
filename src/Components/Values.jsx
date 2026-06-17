@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import Header from "../Header";
 import Footer from "../Footer";
 import AutoReveal from "./AutoReveal";
@@ -9,35 +9,64 @@ import thoughtful from '../assets/values/thoughtful.png';
 import trust from '../assets/values/trust.png'; 
 
 /* ================= REAL ESTATE IMAGES ================= */
-const heroImg = banner;
+const heroImg =  banner;
 const residentialImg = centric;
 const planningImg = thoughtful;
 const trustImg = trust;
 /* ================= VALUES DATA ================= */
-const valuesData = [
+// const valuesData = data[0]?.Side_Section || [
+//   {
+//     title: "Customer-Centric Thinking",
+//     desc: "We place people at the center of every decision, creating spaces that respond to evolving lifestyles, aspirations, and everyday needs with greater clarity and care.",
+//     image: residentialImg,
+//   },
+//   {
+//     title: "Thoughtful Planning",
+//     desc: "Our developments are guided by long-term vision, balanced layouts, and purposeful design choices that bring together function, aesthetics, and lasting value.",
+//     image: planningImg,
+//   },
+//   {
+//     title: "Trust & Transparency",
+//     desc: "We believe strong relationships are built through honesty, accountability, and consistent delivery, ensuring every experience reflects confidence and credibility.",
+//     image: trustImg,
+//   },
+// ];
+
+export default function Values() {
+const[data,setdata] = useState([])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+useEffect(() => {
+  try{
+fetch("https://back-bulding-code.onrender.com/values").then((res) => res.json()).then((data) => {
+          console.log("Fetched media data:", data);
+          // let reverse_data = data.reverse()
+           setdata(data);
+        })  }catch(err){
+    console.log(err)
+  }
+}, [])
+
+const valuesData = data[0]?.Side_Sections || [
   {
     title: "Customer-Centric Thinking",
-    desc: "We place people at the center of every decision, creating spaces that respond to evolving lifestyles, aspirations, and everyday needs with greater clarity and care.",
+    content: "We place people at the center of every decision, creating spaces that respond to evolving lifestyles, aspirations, and everyday needs with greater clarity and care.",
     image: residentialImg,
   },
   {
     title: "Thoughtful Planning",
-    desc: "Our developments are guided by long-term vision, balanced layouts, and purposeful design choices that bring together function, aesthetics, and lasting value.",
+    content: "Our developments are guided by long-term vision, balanced layouts, and purposeful design choices that bring together function, aesthetics, and lasting value.",
     image: planningImg,
   },
   {
     title: "Trust & Transparency",
-    desc: "We believe strong relationships are built through honesty, accountability, and consistent delivery, ensuring every experience reflects confidence and credibility.",
+    content: "We believe strong relationships are built through honesty, accountability, and consistent delivery, ensuring every experience reflects confidence and credibility.",
     image: trustImg,
   },
 ];
 
-export default function Values() {
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
+console.log(data)
   return (
     <>
       <Header />
@@ -46,7 +75,7 @@ export default function Values() {
         {/* ================= HERO ================= */}
         <section
           className="relative w-full min-h-[74vh] md:min-h-[90vh] bg-center bg-cover flex items-end"
-          style={{ backgroundImage: `url(${heroImg})` }}
+          style={{ backgroundImage: `url(${data[0]?.heroImage})`|| `url(${heroImg})` }}
         >
           <div className="absolute inset-0 bg-black/25"></div>
           <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.65),rgba(0,0,0,0.10),rgba(0,0,0,0.25))]" />
@@ -63,8 +92,7 @@ export default function Values() {
 
               {/* UPDATED TEXT SIZE */}
               <p className="text-white text-[16px] md:text-[18px] leading-8 max-w-2xl">
-                The values that guide how we design, build, and deliver
-                meaningful spaces with integrity, care, and long-term vision.
+              {data[0]?.content||"The values that guide how we design, build, and deliver meaningful spaces with integrity, care, and long-term vision."}
               </p>
             </div>
 
@@ -109,18 +137,14 @@ export default function Values() {
                 </p>
 
                 <h2 className="text-[24px] md:text-[32px] lg:text-[40px] font-light leading-[1.04] text-[#3c342d]">
-                  Values that shape every decision, every detail, and every
-                  development.
+                {data[0]?.title1||"Values that shape every decision, every detail, and every development."}
                 </h2>
               </div>
 
               {/* UPDATED TEXT SIZE */}
               <div className="lg:pl-10 lg:border-l lg:border-[#ddd4c9]">
                 <p className="text-[#6f655b] text-[15px] md:text-[17px] leading-8 max-w-2xl">
-                  Our approach is rooted in clarity, responsibility, and
-                  purposeful design. These principles influence the way we plan
-                  communities, engage with people, and create spaces that remain
-                  relevant over time.
+                  {data[0]?.content1 || "Our approach is rooted in clarity, responsibility, and purposeful design. These principles influence the way we plan communities, engage with people, and create spaces that remain relevant over time."}
                 </p>
               </div>
             </div>
@@ -164,7 +188,7 @@ export default function Values() {
                       </h3>
 
                       <p className="text-[#6f655b] leading-8 text-[15px] md:text-[17px] max-w-lg">
-                        {item.desc}
+                        {item.content}
                       </p>
 
                       <div className="mt-8 flex items-center gap-4">
@@ -225,17 +249,15 @@ export default function Values() {
                 </p>
 
                 <h2 className="text-[24px] md:text-[32px] lg:text-[38px] font-light leading-[1.06] text-[#3c342d]">
-                  Strong values create stronger spaces, better experiences, and
-                  more meaningful developments.
+                { data[0]?.title2 || "Strong values create stronger spaces, better experiences, and more meaningful developments."}
                 </h2>
               </div>
 
               <div className="lg:pl-10 lg:border-l lg:border-[#ddd4c9]">
                 <p className="text-[#6f655b] text-[15px] md:text-[17px] leading-8 max-w-2xl">
-                  Our values are not separate from our work. They are reflected
-                  in the way we imagine, design, and deliver environments that
-                  people can trust and connect with for years to come.
+                  {data[0]?.content2 || "Our values are not separate from our work. They are reflected in the way we imagine, design, and deliver environments that people can trust and connect with for years to come."}
                 </p>
+                
               </div>
             </div>
           </div>

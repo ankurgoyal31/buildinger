@@ -1,28 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import img1 from "../../../assets/IsParadise.mp4";
 import img2 from "../../../assets/Greenmeadow.mp4";
 import img3 from "../../../assets/Newtown.mp4";
 
 export default function FeaturedDevelopments() {
+const [data,setdata] = useState([])
+
+  useEffect(() => {
+       
+       try{
+         fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+            //  console.log("Fetched media data:", data);
+             let reverse_data = data.reverse()
+              setdata(reverse_data);
+              // console.log(reverse_data)
+           })
+           .catch((err) => console.log("Error fetching media data:", err));
+   
+       }catch(err){
+        
+   console.log(err)
+  
+       }
+   
+     }, [])
+  
+
   const tabs = {
     "IS PARADISE": {
       slug: "is-paradise",
-      title: "Where 70% of Life Feels Green",
-      desc: "IS Paradise reshapes city living through its rare 70:30 green-to-built ratio, expansive water features and thoughtfully created celebration spaces. Spacious flat layouts, calm landscapes and refined planning come together to offer a living experience distinctly ahead of Jaipur’s contemporary residential developments.",
-      img: img1,
+      title: data[0]?.title9|| "Where 70% of Life Feels Green",
+      desc: data[0]?.content4||"IS Paradise reshapes city living through its rare 70:30 green-to-built ratio, expansive water features and thoughtfully created celebration spaces. Spacious flat layouts, calm landscapes and refined planning come together to offer a living experience distinctly ahead of Jaipur’s contemporary residential developments.",
+      img: data[0]?.video4 || img1,
     },
     "UNIQUE GREEN MEADOWS": {
       slug: "unique-green-meadows",
-      title: "More Life with More Amenities",
-      desc: "With fifteen acres of thoughtfully planned openness, Green Meadows offers space for children to play, adults to unwind and families to grow comfortably together, supported by calm surroundings and smooth connectivity along the expanding 200-foot Tonk Road development corridor.",
-      img: img2,
+      title:data[0]?.title10|| "More Life with More Amenities",
+      desc:data[0]?.content5|| "With fifteen acres of thoughtfully planned openness, Green Meadows offers space for children to play, adults to unwind and families to grow comfortably together, supported by calm surroundings and smooth connectivity along the expanding 200-foot Tonk Road development corridor.",
+      img: data[0]?.video5 ||img2,
     },
     "UNIQUE NEW TOWN": {
       slug: "unique-new-town",
-      title: "A New Benchmarks of Low-Density Living",
-      desc: "By dedicating each floor to a single family, the project brings a rare clarity to planning, emphasising quiet environments, spatial freedom and a premium sense of belonging. Its nearly five-acre total land area with curated clubhouse and thoughtfully designed outdoor spaces further strengthen its distinct residential character.",
-      img: img3,
+      title: data[0]?.title11||"A New Benchmarks of Low-Density Living",
+      desc:data[0]?.content6|| "By dedicating each floor to a single family, the project brings a rare clarity to planning, emphasising quiet environments, spatial freedom and a premium sense of belonging. Its nearly five-acre total land area with curated clubhouse and thoughtfully designed outdoor spaces further strengthen its distinct residential character.",
+      img: data[0]?.video6 ||img3,
     },
   };
 

@@ -9,26 +9,45 @@ export default function CommunitiesSection() {
   const sectionRef = useRef(null);
   const [offsetY, setOffsetY] = useState(0);
 
-  const communities = [
+const [data,setdata] = useState([])
+
+ useEffect(() => {
+     
+     try{
+       fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+           console.log("Fetched media data:", data);
+           let reverse_data = data.reverse()
+            setdata(reverse_data);
+            console.log(reverse_data)
+         })
+         .catch((err) => console.log("Error fetching media data:", err));
+ 
+     }catch(err){
+ 
+     }
+ 
+   }, [])
+
+  const communities = data[0]?.journeySections.length>0 ?data[0]?.journeySections: [
     {
-      name: "Crafting With Integrity",
-      img: img1,
-      desc: "Every project by Unique Builders is guided by transparent practices, responsible planning, and a commitment to deliver what is promised—earning long-standing trust from customers.",
+      title: "Crafting With Integrity",
+      image: img1,
+      content: "Every project by Unique Builders is guided by transparent practices, responsible planning, and a commitment to deliver what is promised—earning long-standing trust from customers.",
     },
     {
-      name: "Designing Future-Ready Living Spaces",
-      img: img2,
-      desc: "We focus on practical layouts, efficient planning, and environments that support modern lifestyles, ensuring homes remain relevant and comfortable over time.",
+      title: "Designing Future-Ready Living Spaces",
+      image: img2,
+      content: "We focus on practical layouts, efficient planning, and environments that support modern lifestyles, ensuring homes remain relevant and comfortable over time.",
     },
     {
-      name: "Delivering Beyond Expectations",
-      img: img3,
-      desc: "With attention to detail and consistent execution, Unique Builders strives to exceed expectations through construction quality, timely delivery, and thoughtful amenities.",
+      title: "Delivering Beyond Expectations",
+      image: img3,
+      content: "With attention to detail and consistent execution, Unique Builders strives to exceed expectations through construction quality, timely delivery, and thoughtful amenities.",
     },
     {
-      name: "Creating Communities With Purpose & Pride",
-      img: img4,
-      desc: "Our developments are planned as complete living ecosystems—bringing together open spaces, infrastructure, and connectivity to create meaningful communities.",
+      title: "Creating Communities With Purpose & Pride",
+      image: img4,
+      content: "Our developments are planned as complete living ecosystems—bringing together open spaces, infrastructure, and connectivity to create meaningful communities.",
     },
   ];
 
@@ -71,8 +90,8 @@ export default function CommunitiesSection() {
         className="relative h-[500px] overflow-hidden shadow-lg group transition-all duration-500 ease-out hover:shadow-[0_10px_30px_rgba(0,149,230,0.15)]"
       >
         <img
-          src={community.img}
-          alt={community.name}
+          src={community.image}
+          alt={community.title}
           className="absolute top-0 left-0 w-full h-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
         />
 
@@ -85,7 +104,7 @@ export default function CommunitiesSection() {
             className="text-[18px] font-medium leading-snug"
             style={{ letterSpacing: "0.5px" }}
           >
-            {community.name}
+            {community.title}
           </h3>
         </div>
 
@@ -94,7 +113,7 @@ export default function CommunitiesSection() {
           className="absolute px-5 text-[14px] font-light text-white bottom-5 left-0 right-0 text-start z-10 leading-6"
           style={{ letterSpacing: "0.2px" }}
         >
-          {community.desc}
+          {community.content}
         </div>
 
         {/* subtle blue accent line */}
