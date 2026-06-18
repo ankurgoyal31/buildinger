@@ -172,7 +172,7 @@ export default function NewsletterPopup() {
     <div className="absolute inset-0 bg-black/40"></div>
 
 <div className="absolute bottom-10 left-8 right-8 text-white max-lg:hidden">
-  <div style={{background:'green',color:'black',fontWeight:'bold',fontFamily:'-moz-initial',width:'45px',textAlign:'center'}}>NEW</div>
+  <div style={{color:'green',fontWeight:'bold',fontFamily:'-moz-initial',width:'45px',textAlign:'center'}}>NEW</div>
       <span className="uppercase tracking-[4px] text-sm">
         Premium {data[0]?.type || "Residential"} Projects
       </span>
