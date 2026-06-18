@@ -3,12 +3,10 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+
   server: {
     host: "0.0.0.0",
-    allowedHosts: [
-      "uniquebuilders.onrender.com",
-      "buildinger.onrender.com"
-    ],
+    allowedHosts: true,
     proxy: {
       "/proxy-api": {
         target: "https://ub-admin-ejs-egx5.onrender.com",
@@ -18,11 +16,9 @@ export default defineConfig({
       },
     },
   },
+
   preview: {
     host: "0.0.0.0",
-    allowedHosts: [
-      "uniquebuilders.onrender.com",
-      "buildinger.onrender.com"
-    ],
+    allowedHosts: true,
   },
 });
