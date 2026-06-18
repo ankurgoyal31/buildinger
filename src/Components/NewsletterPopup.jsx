@@ -8,7 +8,7 @@ export default function NewsletterPopup() {
 
   useEffect(() => {
     try {
-        fetch("http://localhost:3000/popup").then((res) => res.json()).then((data) => {
+        fetch("https://back-bulding-code.onrender.com/popup").then((res) => res.json()).then((data) => {
             setdata(data);
           })
           .catch((err) => console.log("Error fetching media data:", err));
