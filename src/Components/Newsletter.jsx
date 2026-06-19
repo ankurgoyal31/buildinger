@@ -19,7 +19,7 @@ if(show===false){
   }
 
     try{
-      let res =  await fetch("https://back-bulding-code.onrender.com/subscribe",{
+      let res =  await fetch("https://back-bulding-code-ofzs.onrender.com/subscribe",{
         method:'post',
         headers:{ "Content-Type": "application/json"},
         body:JSON.stringify({text})
