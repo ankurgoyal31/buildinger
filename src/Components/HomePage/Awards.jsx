@@ -10,7 +10,7 @@ export default function Awards() {
  useEffect(() => {
      
      try{
-       fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+       fetch("https://back-bulding-code-ofzs.onrender.com/home_data").then((res) => res.json()).then((data) => {
           //  console.log("Fetched media data:", data);
            let reverse_data = data.reverse()
             setdata(reverse_data);
