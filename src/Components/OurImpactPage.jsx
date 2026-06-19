@@ -14,7 +14,7 @@ const OurImpactPage = () => {
  useEffect(() => {
     
     try{
-      fetch("/impacts").then((res) => res.json()).then((data) => {
+      fetch("https://back-bulding-code-ofzs.onrender.com/impacts").then((res) => res.json()).then((data) => {
           console.log("Fetched media data:", data);
           let reverse_data = data.reverse()
            setData(reverse_data);
