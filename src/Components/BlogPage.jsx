@@ -51,7 +51,7 @@ const [blogs, setBlogs] = useState([]);
 const [activeSlide, setActiveSlide] = useState(0);
 useEffect(() => {
      try {
-      fetch("https://back-bulding-code.onrender.com/blogs").then((res) => res.json()).then((data) => {
+      fetch("https://back-bulding-code-ofzs.onrender.com/blogs").then((res) => res.json()).then((data) => {
           console.log("Fetched blogs:", data);
           let reversedData = data.reverse();
           console.log("Reversed blogs:", reversedData);
