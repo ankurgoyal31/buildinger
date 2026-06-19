@@ -252,7 +252,7 @@ console.log("fetching projects from API...",allProjects);
 
       try {
         // const res = await fetch("/proxy-api/api/projects", {
-         const res = await fetch("https://back-bulding-code.onrender.com/projects", {
+         const res = await fetch("https://back-bulding-code-ofzs.onrender.com/projects", {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -287,7 +287,7 @@ console.log("fetching projects from API...",allProjects);
         if (!hadCache) {
           try {
             // const retryRes = await fetch("/proxy-api/api/projects", {
-                const retryRes = await fetch("https://back-bulding-code.onrender.com/projects", {
+                const retryRes = await fetch("https://back-bulding-code-ofzs.onrender.com/projects", {
               method: "GET",
               headers: {
                 Accept: "application/json",
