@@ -53,7 +53,7 @@ export default function Media() {
 
   useEffect(() => {
   try {
-      fetch("https://back-bulding-code.onrender.com/media").then((res) => res.json()).then((data) => {
+      fetch("https://back-bulding-code-ofzs.onrender.com/media").then((res) => res.json()).then((data) => {
           console.log("Fetched media data:", data);
           // You can set this data to state if you want to display it
           setMediaData(data);
