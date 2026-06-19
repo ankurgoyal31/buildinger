@@ -18,7 +18,7 @@ const [blogDetails, setBlogDetails] = useState(null);
     console.log("Blog ID from URL:", id);
     useEffect(() => {
         try {
-            fetch(`https://back-bulding-code.onrender.com/blogs/${id}`)
+            fetch(`https://back-bulding-code-ofzs.onrender.com/blogs/${id}`)
                 .then((res) => res.json())
                 .then((data) => {
                     console.log("Fetched blog details:", data);
