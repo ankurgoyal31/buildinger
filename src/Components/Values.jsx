@@ -39,7 +39,7 @@ const[data,setdata] = useState([])
   }, []);
 useEffect(() => {
   try{
-fetch("https://back-bulding-code.onrender.com/values").then((res) => res.json()).then((data) => {
+fetch("https://back-bulding-code-ofzs.onrender.com/values").then((res) => res.json()).then((data) => {
           console.log("Fetched media data:", data);
           // let reverse_data = data.reverse()
            setdata(data);
