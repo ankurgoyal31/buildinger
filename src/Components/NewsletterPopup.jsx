@@ -8,7 +8,7 @@ export default function NewsletterPopup() {
 
   useEffect(() => {
     try {
-        fetch("https://back-bulding-code.onrender.com/popup").then((res) => res.json()).then((data) => {
+        fetch("https://back-bulding-code-ofzs.onrender.com/popup").then((res) => res.json()).then((data) => {
             setdata(data);
           })
           .catch((err) => console.log("Error fetching media data:", err));
@@ -25,7 +25,7 @@ export default function NewsletterPopup() {
 
     try {
       let res = await fetch(
-        "https://back-bulding-code.onrender.com/subscribe",
+        "https://back-bulding-code-ofzs.onrender.com/subscribe",
         {
           method: "POST",
           headers: {
