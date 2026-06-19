@@ -369,7 +369,7 @@ console.log("fetching projects from API...",allProjects);
       .filter((p) => locFilter === "ALL" || p.location === locFilter)
       .filter((p) => statusFilter === "ALL" || p.status === statusFilter)
       .filter((p) => priceFilter === "ALL" || p.priceRange === priceFilter)
-      .reverse();
+      
   }, [allProjects, activeTab, locFilter, statusFilter, priceFilter]);
 
   // console.log("filtered projects ", filtered,activeTab);
