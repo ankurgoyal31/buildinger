@@ -131,7 +131,7 @@ export default function ProjectDetail() {
 
 
 useEffect(() => {
-  fetch(`https://back-bulding-code.onrender.com/projects_video/${slug}`) 
+  fetch(`https://back-bulding-code-ofzs.onrender.com/projects_video/${slug}`) 
     .then((res) => res.json())
     .then((data) => {
       console.log("FULL RESPONSE:", data);
