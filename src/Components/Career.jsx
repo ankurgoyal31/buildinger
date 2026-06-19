@@ -189,7 +189,7 @@ const visibleJobs = showAll ?  data[0]?.dynamicSections : data[0]?.dynamicSectio
 
 useEffect(() => {
   try{
-fetch("https://back-bulding-code.onrender.com/careers").then((res) => res.json()).then((data) => {
+fetch("https://back-bulding-code-ofzs.onrender.com/careers").then((res) => res.json()).then((data) => {
           console.log("Fetched media data:", data);
           // let reverse_data = data.reverse()
            setdata(data);
@@ -276,7 +276,7 @@ const handleSubmit = async (e) => {
   data.append("cv", cv);
 
   try {
-    const response = await fetch("https://back-bulding-code.onrender.com/apply", {
+    const response = await fetch("https://back-bulding-code-ofzs.onrender.com/apply", {
       method: "POST",
       body: data,
     });
