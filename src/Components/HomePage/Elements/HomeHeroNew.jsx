@@ -26,7 +26,7 @@ const [data,setdata] = useState([])
 
  useEffect(() => {
      try{
-       fetch("https://back-bulding-code.onrender.com/home_data").then((res) => res.json()).then((data) => {
+       fetch("https://back-bulding-code-ofzs.onrender.com/home_data").then((res) => res.json()).then((data) => {
            console.log("Fetched media data:", data);
              setdata(data);
           })
