@@ -43,7 +43,7 @@ export default function CSRPage() {
   const [csrData, setCsrData] = useState([]);
 
   useEffect(() => {
-    fetch('https://back-bulding-code.onrender.com/CSR_data').then(response => response.json())
+    fetch('https://back-bulding-code-ofzs.onrender.com/CSR_data').then(response => response.json())
       .then(data => setCsrData(data))
       .catch(error => console.error('Error fetching CSR data:', error));
   }, []);
