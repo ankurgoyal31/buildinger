@@ -744,41 +744,9 @@ console.log("MAP LINK:", videoUrl);
 </section>
 
         {/* ================= AMENITIES ================= */}
-        {featureGroups.length > 0 && (
-          <section id="amenities" style={S.section}>
-            {/* <span style={S.label}>03 — Features & Amenities</span> */}
-            <h2 style={{ ...S.heading, marginBottom: 48 }}>
-              Comfort and lifestyle — organised.
-            </h2>
-
-            <div className="pd-amenities-grid">
-              {featureGroups.map((group, idx) => (
-                <div key={group.title} className="pd-amenity-group">
-                  <div style={S.amenityGroupHead}>
-                    <span style={S.amenityNum}>
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <h3 style={S.amenityTitle}>{group.title}</h3>
-                  </div>
-
-                  <div style={S.divider} />
-
-                  <ul style={S.amenityList}>
-                    {group.items.map((item, i) => (
-                      <li key={i} style={S.amenityItem}>
-                        <span style={S.amenityDash}>—</span>
-                        <span style={S.amenityText}>
-                          {item?.title || item?.name || item?.label || item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
+        
+        {/* data */}
+        
         {/* ================= HIGHLIGHTS ================= */}
         {highlights.length > 0 && (
           <section id="highlights" style={S.highlights}>
