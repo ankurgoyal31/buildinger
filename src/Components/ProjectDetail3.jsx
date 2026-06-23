@@ -518,10 +518,10 @@ console.log("MAP LINK:", videoUrl);
             <div>
               {/* <span style={S.label}>01 — Overview</span> */}
               <h2 style={{ ...S.heading, textAlign: "left" }}>
-                Crafted for elevated living.
+                  {project.title13 ||" Crafted for elevated living."}
               </h2>
               <p style={S.body}>
-                {project.aboutDescription ||
+                {project.content13 ||
                   "This project is designed to offer a premium residential lifestyle through thoughtful planning, strong visual identity, and a better balance of architecture, comfort, and everyday convenience."}
               </p>
               <div style={S.overviewActions}>
@@ -541,7 +541,7 @@ console.log("MAP LINK:", videoUrl);
             </div>
 
             <div style={S.overviewImgWrap}>
-              <img src={intro} alt="Project" style={S.overviewImg} />
+              <img src={project.Side_image ||intro} alt="Project" style={S.overviewImg} />
               {/* <div style={S.overviewImgTag}>Luxury Residences</div> */}
             </div>
           </div>
